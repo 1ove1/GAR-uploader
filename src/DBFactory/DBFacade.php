@@ -9,13 +9,13 @@ use TPO\LAB2\Env;
  */
 class DBFacade
 {
-	static ?PDO $instance = null;
+	static ?\PDO $instance = null;
 
 	/**
 	 *  Get curr instance of database
 	 * @return PDO 	PDO-object with curr db connection
 	 */
-	public static function getInstance() {
+	public static function getInstance() : \PDO {
 		
 		if (self::$instance === null) {
 			self::$instance = self::connect();
@@ -25,7 +25,7 @@ class DBFacade
 		return self::$instance;
 	}
 
-	public static function connect() : PDO
+	public static function connect() : \PDO
 	{
 		$db_type = Env::db_type->value;
 		$host = Env::host->value;
@@ -34,11 +34,11 @@ class DBFacade
 		$pass = Env::pass->value;
 
 		try {
-			$PDO = new PDO($db_type . ':host=' . $host . ';dbname=' . $db, $user, $pass);
+			$PDO = new \PDO($db_type . ':host=' . $host . ';dbname=' . $db, $user, $pass);
 		} catch (PDOException $exception) {
 			echo $exception->getMessage() . $exception->getCode();
 		}
-		
+
 		return $PDO;
 	}
 }

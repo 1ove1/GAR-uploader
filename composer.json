@@ -1,0 +1,18 @@
+{
+    "name": "tpo/lab2",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "TPO\\LAB2\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Andrey Bulavskiy",
+            "email": "iandrey00@mail.ru"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
