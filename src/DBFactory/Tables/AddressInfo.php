@@ -2,9 +2,9 @@
 
 namespace LAB2\DBFactory\Tables;
 
-use LAB2\DBFactory\Tables\AbstractTable\Table;
+use LAB2\DBFactory\Tables\AbstractTable\AbstractTable;
 
-class AddressInfo extends Table 
+class AddressInfo extends AbstractTable 
 {
 	
 }

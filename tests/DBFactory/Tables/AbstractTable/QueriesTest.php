@@ -2,12 +2,13 @@
 
 use PHPUnit\Framework\TestCase;
 
-use LAB2\DBFactory\Tables\AbstractTable\AbstractTable;
+use LAB2\DBFactory\Tables\AbstractTable\Queries;
+use LAB2\DBFactory\Tables\AbstractTable\MetaTable;
 use LAB2\DBFactory\DBFacade;
 
-final class AbstractTableTest extends TestCase
+final class QueriesTest extends TestCase
 {
-	use AbstractTable;
+	use Queries, MetaTable;
 
 	const currTable = 'tests';
 
@@ -16,30 +17,6 @@ final class AbstractTableTest extends TestCase
 	private ?array 	$fields = null;
 	private ?array  $metaInfo = null;
 	private ?\PDOStatement $PDOInsert = null;
-
-	/**
-	 *  simple compare
-	 * @return void
-	 */
-	public function testGetTableName() : void 
-	{
-		$input = 'SomeName';
-		$output = 'some_name';
-
-		$this->assertEquals($output, $this->getTableName($input	));
-	}
-
-	public function testMetaInfo() {
-		$this->PDO = DBFacade::getInstance();
-		$clearQuery = $this->PDO->query('DESCRIBE ' . self::currTable)->
-						fetchAll(\PDO::FETCH_COLUMN);
-
-		$this->assertEquals(
-			$clearQuery,
-			$this->getMetaInfo(self::currTable)['fields'],
-			'test with fileds ' . implode(',', $clearQuery)
-		);
-	}
 
 	/**
 	 *  select test (full, id, message, where)

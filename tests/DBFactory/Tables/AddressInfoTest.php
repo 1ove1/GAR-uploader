@@ -3,13 +3,13 @@
 use PHPUnit\Framework\TestCase;
 
 use LAB2\DBFactory\Tables\AddressInfo;
-use LAB2\DBFactory\Tables\AbstractTable\AbstractTable;
+use LAB2\DBFactory\Tables\AbstractTable\Queries;
+use LAB2\DBFactory\Tables\AbstractTable\MetaTable;
 use LAB2\DBFactory\DBFacade;
 
 final class AddressInfoTest extends TestCase
 {
-
-	use AbstractTable;
+	use Queries, MetaTable;
 
 	const currTable = 'address_info';
 
