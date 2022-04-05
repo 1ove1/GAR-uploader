@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace TPO\LAB2;
+namespace LAB2;
 
 enum Env : string {
 	case db_type 	= "mysql";

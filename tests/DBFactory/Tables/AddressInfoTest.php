@@ -2,44 +2,22 @@
 
 use PHPUnit\Framework\TestCase;
 
+use LAB2\DBFactory\Tables\AddressInfo;
 use LAB2\DBFactory\Tables\AbstractTable\AbstractTable;
 use LAB2\DBFactory\DBFacade;
 
-final class AbstractTableTest extends TestCase
+final class AddressInfoTest extends TestCase
 {
+
 	use AbstractTable;
 
-	const currTable = 'tests';
+	const currTable = 'address_info';
 
 	private ?PDO 	$PDO = null;
 	private ?string $name = self::currTable;
 	private ?array 	$fields = null;
 	private ?array  $metaInfo = null;
 	private ?\PDOStatement $PDOInsert = null;
-
-	/**
-	 *  simple compare
-	 * @return void
-	 */
-	public function testGetTableName() : void 
-	{
-		$input = 'SomeName';
-		$output = 'some_name';
-
-		$this->assertEquals($output, $this->getTableName($input	));
-	}
-
-	public function testMetaInfo() {
-		$this->PDO = DBFacade::getInstance();
-		$clearQuery = $this->PDO->query('DESCRIBE ' . self::currTable)->
-						fetchAll(\PDO::FETCH_COLUMN);
-
-		$this->assertEquals(
-			$clearQuery,
-			$this->getMetaInfo(self::currTable)['fields'],
-			'test with fileds ' . implode(',', $clearQuery)
-		);
-	}
 
 	/**
 	 *  select test (full, id, message, where)
@@ -49,11 +27,14 @@ final class AbstractTableTest extends TestCase
 	{
 		$this->PDO = DBFacade::getInstance();
 
+		$table = new AddressInfo(DBFacade::getInstance());
+
 		$query = 'SELECT * FROM ' . self::currTable;
+
 		$this->assertEquals(
 			$this->PDO->query($query)
 					  ->fetchAll(\PDO::FETCH_ASSOC), 
-			$this->select('*'), 
+			$table->select('*'), 
 			$query
 		);
 
@@ -62,7 +43,7 @@ final class AbstractTableTest extends TestCase
 
 			$this->assertEquals(
 				$this->PDO->query($query)->fetchAll(\PDO::FETCH_ASSOC), 
-				$this->select($field),
+				$table->select($field),
 				$query
 			);	
 
@@ -71,7 +52,7 @@ final class AbstractTableTest extends TestCase
 
 				$this->assertEquals(
 					$this->PDO->query($query)->fetchAll(\PDO::FETCH_ASSOC), 
-					$this->select('*', $sign, [$field, 2]), 
+					$table->select('*', $sign, [$field, 2]), 
 					$query
 				);
 			}
@@ -88,6 +69,8 @@ final class AbstractTableTest extends TestCase
 		$this->metaInfo = $this->getMetaInfo(self::currTable)['meta'];
 		$this->prepareInsertPDOStatement();
 
+		$table = new AddressInfo(DBFacade::getInstance());
+
 		for ($iter = 5; $iter > 0; --$iter) {
 			$rnd = rand();
 			$select = 'SELECT message FROM ' . self::currTable . ' WHERE message=' . $rnd;
@@ -101,5 +84,4 @@ final class AbstractTableTest extends TestCase
 			);
 		}
 	} 
-
 }

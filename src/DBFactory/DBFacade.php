@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace TPO\LAB2\DBFactory;
+namespace LAB2\DBFactory;
 
-use TPO\LAB2\Env;
+use LAB2\Env;
 
 /**
  * 	Some special funciton for bd connection here
