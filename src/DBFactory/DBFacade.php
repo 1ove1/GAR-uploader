@@ -25,6 +25,12 @@ class DBFacade
 		return self::$instance;
 	}
 
+
+	/**
+	 *  Method to connetcn with database using
+	 *  Env.php file
+	 * @return \PDO connected PDO-object
+	 */
 	public static function connect() : \PDO
 	{
 		$db_type = Env::db_type->value;
