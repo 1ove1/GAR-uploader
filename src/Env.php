@@ -8,4 +8,6 @@ enum Env : string {
 	case host 		= "localhost";
 	case user 		= "user";
 	case pass 		= "password";
+	case zipPath  	= __DIR__ . "/gar_delta_xml.zip";
+	case cachePath	= __DIR__ . "/cache";
 }
