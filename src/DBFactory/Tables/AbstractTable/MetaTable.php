@@ -2,14 +2,15 @@
 
 namespace LAB2\DBFactory\Tables\AbstractTable;
 
+
+/**
+ * TRAIT META TABLE
+ *
+ * IMPLEMETS SOME METHODS FROM ABSTRACTTABLE INTERFACE
+ */
 trait MetaTable
 {
-	// ?string  		$name = null;
-	// ?array 			$fields = null;
-	// ?array   		$metaInfo = null;
-	// ?/PDOStatement   $PDOInsert = null;
-	// ?/PDOStatement   $PDODelete = null;
-	// 
+
 	/**
 	 * Class name to class table (CamelCase to snake_case)
 	 * @param  string $className Class name
@@ -55,7 +56,7 @@ trait MetaTable
 				$tableFields = $this->PDO->query($query)->fetchAll(\PDO::FETCH_COLUMN);
 			}
 		} catch (\PDOException $exception) {
-			echo $exception->getMessage() . ' : ' . $exceptiosn->getCode();
+			echo $exception->getMessage() . ' : ' . $exception->getCode();
 		}
 		return ['meta' => $metaInfo, 'fields' => $tableFields];
 	}
