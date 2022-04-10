@@ -2,10 +2,13 @@
 
 namespace LAB2\DBFactory;
 
-use LAB2\Env;
+use LAB2\{Env, Log, Msg};
 
 /**
- * 	Some special funciton for bd connection here
+ * DBFACADE CLASS
+ * 
+ * SINGLETON, FULL-STATIC FACADE
+ * USE FOR GETTING ACTUAL BD CONNECTION
  */
 class DBFacade
 {
@@ -40,9 +43,16 @@ class DBFacade
 		$pass = Env::pass->value;
 
 		try {
+			Log::write(Msg::LOG_DB_INIT->value);
+
 			$PDO = new \PDO($db_type . ':host=' . $host . ';dbname=' . $db, $user, $pass);
-		} catch (PDOException $exception) {
-			echo $exception->getMessage() . $exception->getCode();
+
+			Log::write(Msg::LOG_COMPLETE->value);
+		} catch (\PDOException $excep) {
+			Log::error(
+				$excep,
+				compact('db_type', 'host', 'user', 'pass')
+			);
 		}
 
 		return $PDO;
