@@ -2,5 +2,5 @@ vendor/
 composer*
 !composer.json
 src/*.zip
-src/logs
-src/cache
+src/.logs
+src/.cache
