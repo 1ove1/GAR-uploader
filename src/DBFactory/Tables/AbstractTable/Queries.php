@@ -2,14 +2,15 @@
 
 namespace LAB2\DBFactory\Tables\AbstractTable;
 
+
+/**
+ * TRAIT QUERIES
+ *
+ * IMPLEMENTS SOME METHODS FROM ABSTRACTTABLE INTERFACE
+ */
 trait Queries
 {
-	// ?string  		$name = null;
-	// ?array 			$fields = null;
-	// ?array   		$metaInfo = null;
-	// ?/PDOStatement   $PDOInsert = null;
-	// ?/PDOStatement   $PDODelete = null;
-	// 
+
 	/**
 	 *  Select method (simple sql query)
 	 * @param  string      $fields    fields that needs to select
@@ -28,26 +29,16 @@ trait Queries
 			$query .= ' WHERE ' . $element[0] . $condition . $element[1];
 		}
 
-		try{
-			return $this->PDO->query($query)->fetchAll(\PDO::FETCH_ASSOC);
-		} catch (\PDOException $exception)
-		{
-			echo $exception->getMessage() . ' ' . $exception->getCode();
-			return [];
-		}
+		return $this->PDO->query($query)->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
 	/**
 	 *  insert query
 	 * @param  array  $fields_values array with field => value struct 
-	 * @return voids
+	 * @return void
 	 */
 	public function insert(array $fields_values) : void
 	{
-		try {
-			$this->PDOInsert->execute($fields_values);
-		} catch (\PDOException $exception) {
-			echo $exception->getMessage() . ' ' . $exception->getCode();
-		}
+		$this->PDOInsert->execute($fields_values);
 	}
 }
