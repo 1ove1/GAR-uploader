@@ -2,9 +2,16 @@
 
 namespace LAB2\DBFactory\Tables;
 
-use LAB2\DBFactory\Tables\AbstractTable\AbstractTable;
+use LAB2\DBFactory\Tables\ConcreteTable;
 
-class AddressInfo extends AbstractTable 
+
+/**
+ * ADDRESS INFO CLASS-MODEL
+ *
+ * EXTENDS CONCRETE TABLE AND USING FOR COMMUNICATE
+ * WITH TABLE 'address_info'
+ */
+class AddressInfo extends ConcreteTable 
 {
 	
 }
