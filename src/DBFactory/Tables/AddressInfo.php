@@ -13,5 +13,29 @@ use LAB2\DBFactory\Tables\ConcreteTable;
  */
 class AddressInfo extends ConcreteTable 
 {
-	
+	public function getFieldsToCreate() : array 
+	{
+		return [
+			'id_addr' => [
+				'INTEGER', 
+				'auto_increment', 
+				'PRIMARY KEY',
+			],
+			'id' => [
+				'CHAR(50)',
+			],
+			'objectid' => [
+				'CHAR(50)',
+			],
+			'objectguid' => [
+				'CHAR(50)',
+			],
+			'name' => [
+				'CHAR(100)',
+			],
+			'typename' => [
+				'CHAR(50)',
+			],
+		];
+	}
 }
