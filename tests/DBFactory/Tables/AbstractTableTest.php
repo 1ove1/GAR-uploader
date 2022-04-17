@@ -2,16 +2,22 @@
 
 use PHPUnit\Framework\TestCase;
 
-use LAB2\DBFactory\Tables\AddressInfo;
-use LAB2\DBFactory\Tables\AbstractTable\Queries;
-use LAB2\DBFactory\Tables\AbstractTable\MetaTable;
+use LAB2\DBFactory\Tables\AbstractTable\{
+	Queries, MetaTable, AbstractTable
+};
+use LAB2\DBFactory\Tables\ConcreteTable;
 use LAB2\DBFactory\DBFacade;
 
-final class AddressInfoTest extends TestCase
+class Tests extends ConcreteTable
+{
+
+}
+
+final class AbstractTableTest extends TestCase
 {
 	use Queries, MetaTable;
 
-	const currTable = 'address_info';
+	const currTable = 'tests';
 
 	private ?PDO 	$PDO = null;
 	private ?string $name = self::currTable;
@@ -27,7 +33,7 @@ final class AddressInfoTest extends TestCase
 	{
 		$this->PDO = DBFacade::getInstance();
 
-		$table = new AddressInfo(DBFacade::getInstance());
+		$table = new Tests(DBFacade::getInstance());
 
 		$query = 'SELECT * FROM ' . self::currTable;
 
@@ -69,7 +75,7 @@ final class AddressInfoTest extends TestCase
 		$this->metaInfo = $this->getMetaInfo(self::currTable)['meta'];
 		$this->prepareInsertPDOStatement();
 
-		$table = new AddressInfo(DBFacade::getInstance());
+		$table = new Tests(DBFacade::getInstance());
 
 		for ($iter = 5; $iter > 0; --$iter) {
 			$rnd = rand();
