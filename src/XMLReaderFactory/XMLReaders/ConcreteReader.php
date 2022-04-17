@@ -9,6 +9,7 @@ use LAB2\XMLReaderFactory\XMLReaders\AbstractXMLReader\{
 	CustomReader
 };
 use LAB2\XMLReaderFactory\XMLReaders\ShedulerObject;
+use LAB2\DBFactory\Tables\ConcreteTable;
 use LAB2\{Env, Msg, Log};
 
 // define paths
@@ -21,10 +22,40 @@ abstract class ConcreteReader extends AbstractXMLReader implements CustomReader,
 
 	protected ?ConcreteReader $linkToAnother = null;
 
+	/**
+	 * simplifiy construct from abstractreader using Env.php
+	 * @param string $fileName name of concrete xml file
+	 */
 	function __construct(string $fileName = '')	
 	{
 		parent::__construct(ZIP_PATH, $fileName, CACHE_PATH);
 	}
+
+	/**
+	 * method thath execute main object function
+	 * @param  ConcreteTable $model model of concrete table
+	 * @return void
+	 */
+	public function excec(ConcreteTable $model) : void
+	{
+		foreach ($this as $value) {
+			$this->excecDoWork($model, $value);
+		}
+
+		$this->__destruct();
+
+		if (!is_null($this->linkToAnother)) {
+			$this->linkToAnother->excec($model);
+		}
+	}
+
+	/**
+	 * procedure that contains main operations from excec method
+	 * @param  ConcreteTable $model table model
+	 * @param  array         $value current parse element
+	 * @return void
+	 */
+	protected abstract function excecDoWork(ConcreteTable $model, array $value) : void;
 
 	/**
 	 *  method from ShedulerObject

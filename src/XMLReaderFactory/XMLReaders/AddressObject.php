@@ -15,18 +15,10 @@ class AddressObject extends ConcreteReader
 		return ['ID', 'OBJECTID', 'OBJECTGUID', 'NAME', 'TYPENAME', 'ISACTUAL', 'ISACTIVE'];
 	}
 
-	public function excec(ConcreteTable $model) : void
+	public function excecDoWork(ConcreteTable $model, array $value) : void
 	{
-		foreach ($this as $value) {
-			if ($value['isactive'] === "1" && $value['isactual'] === "1") {
-				$model->insert(array_diff_key($value, array_flip(['isactual', 'isactive'])));
-			}
-		}
-
-		$this->__destruct();
-		
-		if (!is_null($this->linkToAnother)) {
-			$this->linkToAnother->excec($model);
+		if ($value['isactive'] === "1" && $value['isactual'] === "1") {
+			$model->insert(array_diff_key($value, array_flip(['isactual', 'isactive'])));
 		}
 	}
 }

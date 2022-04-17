@@ -15,16 +15,10 @@ class AsHouses extends ConcreteReader
 		return ['ID', 'OBJECTID', 'OBJECTGUID', 'HOUSENUM', 'HOUSETYPE', 'ISACTUAL', 'ISACTIVE'];
 	}
 
-	public function excec(ConcreteTable $model) : void
+	protected function excecDoWork(ConcreteTable $model, array $value) : void
 	{
-		foreach ($this as $value) {
-			if ($value['isactive'] === "1" && $value['isactual'] === "1") {
-				$model->insert(array_diff_key($value, array_flip(['isactual', 'isactive'])));
-			}
-		}
-		if (!is_null($this->linkToAnother)) {
-			$this->__destruct();
-			$this->linkToAnother->excec($model);
+		if ($value['isactive'] === "1" && $value['isactual'] === "1") {
+			$model->insert(array_diff_key($value, array_flip(['isactual', 'isactive'])));
 		}
 	}
 }
