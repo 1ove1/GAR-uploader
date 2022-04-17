@@ -2,9 +2,9 @@
 
 use PHPUnit\Framework\TestCase;
 
-use LAB2\XMLReaderFactory\XMLReaders\AddressObject;
+use GAR\Uploader\XMLReaderFactory\XMLReaders\AddressObject;
 
-use LAB2\DBFactory\DBFactory;
+use GAR\Uploader\DBFactory\DBFactory;
 
 class AddressObjectTest extends TestCase
 {

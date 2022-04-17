@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace LAB2\DBFactory\Tables\AbstractTable;
+namespace GAR\Uploader\DBFactory\Tables\AbstractTable;
 
 
 /**

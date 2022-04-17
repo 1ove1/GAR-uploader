@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace LAB2\XMLReaderFactory\XMLReaders\AbstractXMLReader;
+namespace GAR\Uploader\XMLReaderFactory\XMLReaders\AbstractXMLReader;
 
 
 trait OpenXMLFromZip

@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-use LAB2\XMLReaderFactory\{
+use GAR\Uploader\XMLReaderFactory\{
 	XMLReaderFactory,
 	XMLReaders\ConcreteReader
 };

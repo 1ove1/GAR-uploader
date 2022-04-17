@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-use LAB2\{Log, Msg};
+use GAR\Uploader\{Log, Msg};
 
 const FOR_TEST = 'test message';
 

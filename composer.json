@@ -3,7 +3,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "LAB2\\": "src/"
+            "GAR\\Uploader\\": "src/"
         }
     },
     "authors": [

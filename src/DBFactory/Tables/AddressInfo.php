@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace LAB2\DBFactory\Tables;
+namespace GAR\Uploader\DBFactory\Tables;
 
-use LAB2\DBFactory\Tables\ConcreteTable;
+use GAR\Uploader\DBFactory\Tables\ConcreteTable;
 
 
 /**

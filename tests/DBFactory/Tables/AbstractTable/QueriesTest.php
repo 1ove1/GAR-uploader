@@ -2,9 +2,11 @@
 
 use PHPUnit\Framework\TestCase;
 
-use LAB2\DBFactory\Tables\AbstractTable\Queries;
-use LAB2\DBFactory\Tables\AbstractTable\MetaTable;
-use LAB2\DBFactory\DBFacade;
+use GAR\Uploader\DBFactory\Tables\AbstractTable\{
+	Queries,
+	MetaTable
+};
+use GAR\Uploader\DBFactory\DBFacade;
 
 final class QueriesTest extends TestCase
 {

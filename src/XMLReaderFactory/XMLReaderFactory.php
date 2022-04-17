@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace LAB2\XMLReaderFactory;
+namespace GAR\Uploader\XMLReaderFactory;
 
-use LAB2\XMLReaderFactory\XMLReaders\{
+use GAR\Uploader\XMLReaderFactory\XMLReaders\{
 	ConcreteReader,
 	AddressObject,
 	AsHouses
 };
-use LAB2\DBFactory\{
+use GAR\Uploader\DBFactory\{
 	DBFactory,
 };
 

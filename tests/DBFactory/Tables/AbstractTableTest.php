@@ -2,11 +2,13 @@
 
 use PHPUnit\Framework\TestCase;
 
-use LAB2\DBFactory\Tables\AbstractTable\{
+use GAR\Uploader\DBFactory\Tables\AbstractTable\{
 	Queries, MetaTable, AbstractTable
 };
-use LAB2\DBFactory\Tables\ConcreteTable;
-use LAB2\DBFactory\DBFacade;
+use GAR\Uploader\DBFactory\{
+	Tables\ConcreteTable,
+	DBFacade
+};
 
 class Tests extends ConcreteTable
 {

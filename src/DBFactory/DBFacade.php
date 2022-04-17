@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace LAB2\DBFactory;
+namespace GAR\Uploader\DBFactory;
 
-use LAB2\{Env, Log, Msg};
+use GAR\Uploader\{Env, Log, Msg};
 
 /**
  * DBFACADE CLASS

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace LAB2;
+namespace GAR\Uploader;
 
 enum Msg : string 
 {

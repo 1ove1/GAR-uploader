@@ -2,9 +2,11 @@
 
 use PHPUnit\Framework\TestCase;
 
-use LAB2\DBFactory\DBFactory;
-use LAB2\DBFactory\DBFacade;
-use LAB2\DBFactory\Tables\AddressInfo;
+use GAR\Uploader\DBFactory\{
+	DBFactory,
+	DBFacade,
+	Tables\AddressInfo
+};
 
 final class DBFactoryTest extends TestCase
 {

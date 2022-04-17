@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace LAB2\XMLReaderFactory\XMLReaders;
+namespace GAR\Uploader\XMLReaderFactory\XMLReaders;
 
-use LAB2\XMLReaderFactory\XMLReaders\AbstractXMLReader\{
+use GAR\Uploader\XMLReaderFactory\XMLReaders\AbstractXMLReader\{
 	AbstractXMLReader, 
 	IteratorXML, 
 	OpenXMLFromZip, 
 	CustomReader
 };
-use LAB2\XMLReaderFactory\XMLReaders\ShedulerObject;
-use LAB2\DBFactory\Tables\ConcreteTable;
-use LAB2\{Env, Msg, Log};
+use GAR\Uploader\XMLReaderFactory\XMLReaders\ShedulerObject;
+use GAR\Uploader\DBFactory\Tables\ConcreteTable;
+use GAR\Uploader\{Env, Msg, Log};
 
 // define paths
 define('ZIP_PATH', ENV::zipPath->value);

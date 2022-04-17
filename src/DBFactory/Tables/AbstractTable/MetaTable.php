@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace LAB2\DBFactory\Tables\AbstractTable;
+namespace GAR\Uploader\DBFactory\Tables\AbstractTable;
 
 
 /**
@@ -49,7 +49,7 @@ trait MetaTable
 		$tableFields = [];
 
 		try {
-			if (\LAB2\Env::db_type->value === 'mysql') {
+			if (\GAR\Uploader\Env::db_type->value === 'mysql') {
 				$query = 'DESCRIBE ' . $tableName;
 
 				$metaInfo = $this->PDO->query($query)->fetchAll(\PDO::FETCH_ASSOC);

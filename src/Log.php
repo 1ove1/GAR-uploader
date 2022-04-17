@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace LAB2;
+namespace GAR\Uploader;
 
 
 // path to the log directory
-define('LOG_PATH', \LAB2\Env::logPath->value);
+define('LOG_PATH', \GAR\Uploader\Env::logPath->value);
 set_exception_handler([Log::class, 'error']);
 
 /**
@@ -79,7 +79,7 @@ class Log
 			str_replace(' ', '_', self::currTime())
 		));
 
-		self::put(\LAB2\Msg::LOG_LAUNCH->value . PHP_EOL);
+		self::put(\GAR\Uploader\Msg::LOG_LAUNCH->value . PHP_EOL);
 	} 
 
 	/**

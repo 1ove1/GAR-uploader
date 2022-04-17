@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace LAB2\DBFactory\Tables;
+namespace GAR\Uploader\DBFactory\Tables;
 
-use LAB2\DBFactory\Tables\AbstractTable\{
+use GAR\Uploader\DBFactory\Tables\AbstractTable\{
 	AbstractTable, Queries, MetaTable
 };
-use LAB2\DBFactory\Tables\CreateTable;
-use LAB2\{Log, Msg};
+use GAR\Uploader\DBFactory\Tables\CreateTable;
+use GAR\Uploader\{Log, Msg};
 
 
 /**

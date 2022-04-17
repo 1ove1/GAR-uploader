@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace LAB2\XMLReaderFactory\XMLReaders;
+namespace GAR\Uploader\XMLReaderFactory\XMLReaders;
 
-use LAB2\XMLReaderFactory\XMLReaders\ConcreteReader;
-use LAB2\DBFactory\Tables\ConcreteTable;
+use GAR\Uploader\XMLReaderFactory\XMLReaders\ConcreteReader;
+use GAR\Uploader\DBFactory\Tables\ConcreteTable;
 	
 class AsHouses extends ConcreteReader 
 {

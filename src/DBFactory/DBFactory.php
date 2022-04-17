@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace LAB2\DBFactory;
+namespace GAR\Uploader\DBFactory;
 
-use LAB2\DBFactory\DBFacade;
-use LAB2\DBFactory\Tables\{
+use GAR\Uploader\DBFactory\DBFacade;
+use GAR\Uploader\DBFactory\Tables\{
 	AddressInfo,
 	Houses
 };
