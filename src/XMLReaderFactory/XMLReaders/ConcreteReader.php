@@ -29,6 +29,15 @@ abstract class ConcreteReader extends AbstractXMLReader implements CustomReader,
 	function __construct(string $fileName = '')	
 	{
 		parent::__construct(ZIP_PATH, $fileName, CACHE_PATH);
+
+		Log::addTask(1);
+	}
+
+	function __destruct()
+	{
+		parent::__destruct();
+
+		Log::removeTask(1);
 	}
 
 	/**

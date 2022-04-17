@@ -91,9 +91,46 @@ class Log
 	private static function put(string $message) : void 
 	{
 		file_put_contents(CURR_LOG_FILE, $message, FILE_APPEND);
-		if (count($_SERVER['argv']) >= 2 && in_array($_SERVER['argv'][1], ['-l', '--log'])) {
-			echo $message;
+	
+		if (count($_SERVER['argv']) >= 2 && 
+			in_array($_SERVER['argv'][1], ['-l', '--log'])) {
+
+			echo "\r" . $message;
+
+			if (self::addTask() > self::removeTask()) {
+				echo sprintf("Прогресс: %d%% (%d из %d)", 
+					self::removeTask() * 100 / self::addTask(),
+					self::removeTask(),
+					self::addTask()
+				);
+			}
 		}
+	}
+
+	public static function addTask(int $add = 0) : int 
+	{
+		static $tasksCount = 0;
+
+		if ($add < 0) {
+			$tasksCount = 0;
+		}
+
+		$tasksCount += $add;
+
+		return $tasksCount;
+	}
+
+	public static function removeTask(int $dec = 0) : int
+	{
+		static $taskRemoved = 0;
+
+		if ($dec < 0) {
+			$taskRemoved = 0;
+		}
+
+		$taskRemoved += $dec;
+
+		return $taskRemoved;
 	}
 
 	/**
