@@ -30,6 +30,7 @@ abstract class ConcreteReader extends AbstractXMLReader implements CustomReader,
 	{
 		parent::__construct(ZIP_PATH, $fileName, CACHE_PATH);
 
+		// task reporting
 		Log::addTask(1);
 	}
 
@@ -37,6 +38,7 @@ abstract class ConcreteReader extends AbstractXMLReader implements CustomReader,
 	{
 		parent::__destruct();
 
+		// task reporting
 		Log::removeTask(1);
 	}
 

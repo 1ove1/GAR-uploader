@@ -107,6 +107,11 @@ class Log
 		}
 	}
 
+	/**
+	 * add task to progress badd
+	 * @param 	int|integer $add task weight
+	 * @return 	int  	total tasks count
+	 */
 	public static function addTask(int $add = 0) : int 
 	{
 		static $tasksCount = 0;
@@ -120,6 +125,11 @@ class Log
 		return $tasksCount;
 	}
 
+	/**
+	 * remove task in a progress bar 
+	 * @param  int|integer $dec weight of task
+	 * @return int         removed task count
+	 */
 	public static function removeTask(int $dec = 0) : int
 	{
 		static $taskRemoved = 0;
