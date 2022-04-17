@@ -5,6 +5,7 @@ namespace LAB2;
 
 // path to the log directory
 define('LOG_PATH', \LAB2\Env::logPath->value);
+set_exception_handler([Log::class, 'error']);
 
 /**
  * SIMPLE LOGGER CLASS
@@ -48,7 +49,7 @@ class Log
 	 * @param  array      $params additional strings
 	 * @return void
 	 */
-	public static function error(\Exception $excp, array $params = []) : void
+	public static function error(\Throwable $excp, array $params = []) : void
 	{
 
 		if ($excp instanceof \PDOException) {
