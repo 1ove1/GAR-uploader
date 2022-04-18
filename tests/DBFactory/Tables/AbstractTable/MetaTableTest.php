@@ -7,37 +7,50 @@ use GAR\Uploader\DBFactory\Tables\AbstractTable\{
 	Queries
 };
 use GAR\Uploader\DBFactory\DBFacade;
+use GAR\Tests\TestEnv;
 
 final class MetaTableTest extends TestCase
 {
-	use Queries, MetaTable;
+	use MetaTable;
 
 	const currTable = 'tests';
 
 	private ?PDO 	$PDO = null;
-	private ?string $name = self::currTable;
-	private ?array 	$fields = null;
-	private ?array  $metaInfo = null;
-	private ?\PDOStatement $PDOInsert = null;
 
-	/**
-	 *  simple compare
-	 * @return void
-	 */
-	public function testGetTableName() : void 
+	protected function setUp() : void
 	{
-		$input = 'SomeName';
-		$output = 'some_name';
+		$this->PDO = DBFacade::getInstance(TestEnv::class);
+		$this->PDO->exec(
+			sprintf(
+				"DROP TABLE IF EXISTS %s;" . 
+				"CREATE TABLE %s(id INTEGER auto_increment PRIMARY KEY, message CHAR(50));",
+				self::currTable,
+				self::currTable
+		));	
+	}	
 
-		$this->assertEquals($output, $this->getTableName($input	));
+	protected function tearDown() : void
+	{
+		$this->PDO->exec('DROP TABLE ' . self::currTable);
 	}
+
+	// /**
+	//  *  simple compare
+	//  * @return void
+	//  */
+	// public function testGetTableName() : void 
+	// {
+	// 	$input = 'SomeName';
+	// 	$output = 'some_name';
+
+	// 	$this->assertEquals($output, $this->getTableName($input	));
+	// }
 
 	/**
 	 *  meta info
 	 * @return 
 	 */
 	public function testMetaInfo() {
-		$this->PDO = DBFacade::getInstance();
 		$clearQuery = $this->PDO->query('DESCRIBE ' . self::currTable)->
 						fetchAll(\PDO::FETCH_COLUMN);
 
