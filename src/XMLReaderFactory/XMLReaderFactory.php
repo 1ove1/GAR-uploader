@@ -33,7 +33,7 @@ class XMLReaderFactory
 
 	]; 	
 	
-	public static function excecAddrObj() : void
+	public static function execAddrObj() : void
 	{
 		$model[] = DBFactory::getAddressInfoTable();
 		$model[] = DBFactory::getHousesTable();
@@ -43,7 +43,7 @@ class XMLReaderFactory
 		$bigReader[] = self::prepare(new AsHouses(), FILES['AS_HOUSES']);
 
 		foreach ($bigReader as $key => $task) {
-			$task->excec($model[$key]);
+			$task->exec($model[$key]);
 		}
 	}
 

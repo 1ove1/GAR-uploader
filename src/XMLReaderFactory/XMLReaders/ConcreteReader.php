@@ -47,16 +47,16 @@ abstract class ConcreteReader extends AbstractXMLReader implements CustomReader,
 	 * @param  ConcreteTable $model model of concrete table
 	 * @return void
 	 */
-	public function excec(ConcreteTable $model) : void
+	public function exec(ConcreteTable $model) : void
 	{
 		foreach ($this as $value) {
-			$this->excecDoWork($model, $value);
+			$this->execDoWork($model, $value);
 		}
 
 		$this->__destruct();
 
 		if (!is_null($this->linkToAnother)) {
-			$this->linkToAnother->excec($model);
+			$this->linkToAnother->exec($model);
 		}
 	}
 
@@ -66,7 +66,7 @@ abstract class ConcreteReader extends AbstractXMLReader implements CustomReader,
 	 * @param  array         $value current parse element
 	 * @return void
 	 */
-	protected abstract function excecDoWork(ConcreteTable $model, array $value) : void;
+	protected abstract function execDoWork(ConcreteTable $model, array $value) : void;
 
 	/**
 	 *  method from ShedulerObject

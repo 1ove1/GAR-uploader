@@ -15,7 +15,7 @@ class AddressObject extends ConcreteReader
 		return ['ID', 'OBJECTID', 'OBJECTGUID', 'NAME', 'TYPENAME', 'ISACTUAL', 'ISACTIVE'];
 	}
 
-	public function excecDoWork(ConcreteTable $model, array $value) : void
+	public function execDoWork(ConcreteTable $model, array $value) : void
 	{
 		if ($value['isactive'] === "1" && $value['isactual'] === "1") {
 			$model->insert(array_diff_key($value, array_flip(['isactual', 'isactive'])));

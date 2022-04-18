@@ -7,7 +7,7 @@ use GAR\Uploader\DBFactory\DBFactory;
 
 // DBFactory::getAddressInfoTable();
 
-XMLReaderFactory::excecAddrObj();
+XMLReaderFactory::execAddrObj();
 
 // \GAR\Uploader\Log::write('enter to database...');
 // $connect = new PDO('mysql:host=localhost;dbname=address_info', 'user', 'password');

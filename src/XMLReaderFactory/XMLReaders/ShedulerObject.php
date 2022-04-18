@@ -8,5 +8,5 @@ use GAR\Uploader\DBFactory\Tables\ConcreteTable;
 interface ShedulerObject
 {
 	public function linked(string $fileName) : void;
-	public function excec(ConcreteTable $model) : void;
+	public function exec(ConcreteTable $model) : void;
 }
