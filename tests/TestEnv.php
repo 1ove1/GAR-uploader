@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\Tests;
+namespace GAR\Tests;
 
 
 /**
@@ -10,7 +10,7 @@ namespace GAR\Uploader\Tests;
  */
 enum TestEnv : string {
 	case db_type  	= "mysql";
-	case db 		= "address_info";
+	case db 		= "address_info_tests";
 	case host 		= "localhost";
 	case user 		= "user";
 	case pass 		= "password";
