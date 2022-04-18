@@ -2,10 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-use GAR\Uploader\DBFactory\Tables\AbstractTable\{
-	MetaTable,
-	Queries
-};
+use GAR\Uploader\DBFactory\Tables\AbstractTable\MetaTable;
 use GAR\Uploader\DBFactory\DBFacade;
 use GAR\Tests\TestEnv;
 
@@ -22,16 +19,16 @@ final class MetaTableTest extends TestCase
 		$this->PDO = DBFacade::getInstance(TestEnv::class);
 		$this->PDO->exec(
 			sprintf(
-				"DROP TABLE IF EXISTS %s;" . 
-				"CREATE TABLE %s(id INTEGER auto_increment PRIMARY KEY, message CHAR(50));",
+				'CREATE TABLE IF NOT EXISTS %s(id INTEGER auto_increment PRIMARY KEY, message INTEGER);',
 				self::currTable,
-				self::currTable
 		));	
+
+		$this->PDO->exec('BEGIN');
 	}	
 
 	protected function tearDown() : void
 	{
-		$this->PDO->exec('DROP TABLE ' . self::currTable);
+		$this->PDO->exec('ROLLBACK');
 	}
 
 	// /**
