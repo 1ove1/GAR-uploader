@@ -16,13 +16,16 @@ class DBFacade
 
 	/**
 	 *  Get curr instance of database
-	 * @return PDO 	PDO-object with curr db connection
+	 * @param  string   curr environmant object path
+	 * @return PDO 		PDO-object with curr db connection
 	 */
-	public static function getInstance() : \PDO {
+	public static function getInstance(?string $envClassName = null) : \PDO {
 		
-		if (self::$instance === null) {
-			self::$instance = self::connect();
-
+		if (self::$instance === null || !is_null($envClassName)) {
+			if (is_null($envClassName)) {
+				$envClassName = Env::class;
+			}
+			self::$instance = self::connect($envClassName);
 		} 
 
 		return self::$instance;
@@ -32,15 +35,18 @@ class DBFacade
 	/**
 	 *  Method to connetcn with database using
 	 *  Env.php file
+	 * @param 	strnig	$env 	className of environmant object
 	 * @return \PDO connected PDO-object
 	 */
-	public static function connect() : \PDO
+	public static function connect(string $env) : \PDO
 	{
-		$db_type = Env::db_type->value;
-		$host = Env::host->value;
-		$db = Env::db->value;
-		$user = Env::user->value;
-		$pass = Env::pass->value;
+		$conf = call_user_func($env . '::toArray');
+
+		$db_type = $conf['db_type'];
+		$host = $conf['host'];
+		$db = $conf['db'];
+		$user = $conf['user'];
+		$pass = $conf['pass'];
 
 		try {
 			Log::write(Msg::LOG_DB_INIT->value);
