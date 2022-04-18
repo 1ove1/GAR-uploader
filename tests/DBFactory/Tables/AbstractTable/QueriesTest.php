@@ -105,10 +105,10 @@ final class QueriesTest extends TestCase
 				$rnd,
 			);
 
-			$this->insert(['message' => $rnd]);
+			$this->insert([self::insertField => $rnd]);
 
 			$this->assertEquals(
-				$this->PDO->query($select)->fetchAll(\PDO::FETCH_ASSOC)[0]['message'],
+				$this->PDO->query($select)->fetchAll(\PDO::FETCH_ASSOC)[0][self::insertField],
 				$rnd,
 				'test insert query with ' . $rnd
 			);
