@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-use GAR\Uploader\XMLReaderFactory\XMLReaders\AbstractXMLReader\OpenXMLFromZip;
+use GAR\Uploader\Readers\AbstractXMLReader\OpenXMLFromZip;
 
 class OpenXMLFromZipTest extends TestCase
 {

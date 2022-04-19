@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-use GAR\Uploader\DBFactory\Tables\AbstractTable\{
+use GAR\Uploader\Models\AbstractTable\{
 	Queries,
 	MetaTable
 };

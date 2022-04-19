@@ -3,7 +3,7 @@
 namespace GAR\Uploader\DBFactory;
 
 use GAR\Uploader\DBFactory\DBFacade;
-use GAR\Uploader\DBFactory\Tables\{
+use GAR\Uploader\Models\{
 		ConcreteTable,
 		AddressInfo,
     Houses

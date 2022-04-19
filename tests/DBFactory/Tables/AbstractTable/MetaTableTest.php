@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-use GAR\Uploader\DBFactory\Tables\AbstractTable\MetaTable;
+use GAR\Uploader\Models\AbstractTable\MetaTable;
 use GAR\Uploader\DBFactory\DBFacade;
 use GAR\Tests\TestEnv;
 

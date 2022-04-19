@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\DBFactory\Tables;
+namespace GAR\Uploader\Models;
 
-use GAR\Uploader\DBFactory\Tables\AbstractTable\{
+use GAR\Uploader\Models\AbstractTable\{
 	AbstractTable, Queries, MetaTable
 };
-use GAR\Uploader\DBFactory\Tables\CreateTable;
+use GAR\Uploader\Models\CreateTable;
 use GAR\Uploader\{Log, Msg, Env};
 
 /**

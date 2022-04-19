@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\XMLReaderFactory\XMLReaders;
+namespace GAR\Uploader\Readers;
 
-use GAR\Uploader\XMLReaderFactory\XMLReaders\ConcreteReader;
-use GAR\Uploader\DBFactory\Tables\ConcreteTable;
+use GAR\Uploader\Readers\ConcreteReader;
+use GAR\Uploader\Models\ConcreteTable;
 	
 class AddressObject extends ConcreteReader 
 {

@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\XMLReaderFactory\XMLReaders;
+namespace GAR\Uploader\Readers;
 
-use GAR\Uploader\XMLReaderFactory\XMLReaders\AbstractXMLReader\{
+use GAR\Uploader\Readers\AbstractXMLReader\{
 	AbstractXMLReader, 
 	IteratorXML, 
 	OpenXMLFromZip, 
 	CustomReader
 };
-use GAR\Uploader\XMLReaderFactory\XMLReaders\ShedulerObject;
-use GAR\Uploader\DBFactory\Tables\ConcreteTable;
+use GAR\Uploader\Readers\ShedulerObject;
+use GAR\Uploader\Models\ConcreteTable;
 use GAR\Uploader\{Env, Msg, Log};
 
 // define paths

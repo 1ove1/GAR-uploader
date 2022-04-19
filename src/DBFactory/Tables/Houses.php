@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\DBFactory\Tables;
+namespace GAR\Uploader\Models;
 
-use GAR\Uploader\DBFactory\Tables\ConcreteTable;
+use GAR\Uploader\Models\ConcreteTable;
 
 
 /**

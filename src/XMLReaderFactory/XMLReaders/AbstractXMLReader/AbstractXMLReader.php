@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\XMLReaderFactory\XMLReaders\AbstractXMLReader;
+namespace GAR\Uploader\Readers\AbstractXMLReader;
 
-use GAR\Uploader\XMLReaderFactory\XMLReaders\AbstractXMLReader\CustomReader;
+use GAR\Uploader\Readers\AbstractXMLReader\CustomReader;
 
 
 /**

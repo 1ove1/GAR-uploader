@@ -2,7 +2,7 @@
 
 namespace GAR\Uploader\XMLReaderFactory;
 
-use GAR\Uploader\XMLReaderFactory\XMLReaders\{
+use GAR\Uploader\Readers\{
 	ConcreteReader,
 	AddressObject,
 	AsHouses
