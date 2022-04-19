@@ -4,3 +4,4 @@ composer*
 src/*.zip
 src/.logs
 src/.cache
+src/Env.php
