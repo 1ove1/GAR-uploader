@@ -12,12 +12,17 @@ use GAR\Uploader\{Env, Log, Msg};
  */
 class DBFacade
 {
-	static ?\PDO $instance = null;
+	/**
+	 *  PDO object
+	 *
+	 * @var \PDO|null
+	 */
+	public static ?\PDO $instance = null;
 
 	/**
 	 *  Get curr instance of database
 	 * @param  string   curr environmant object path
-	 * @return PDO 		PDO-object with curr db connection
+	 * @return \PDO 		PDO-object with curr db connection
 	 */
 	public static function getInstance(?string $envClassName = null) : \PDO {
 		

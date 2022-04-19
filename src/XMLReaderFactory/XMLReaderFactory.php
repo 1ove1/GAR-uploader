@@ -7,9 +7,6 @@ use GAR\Uploader\XMLReaderFactory\XMLReaders\{
 	AddressObject,
 	AsHouses
 };
-use GAR\Uploader\DBFactory\{
-	DBFactory,
-};
 
 const FILES = [
 	'AS_HOUSES' => 'AS_HOUSES', 
@@ -33,19 +30,18 @@ class XMLReaderFactory
 
 	]; 	
 	
-	public static function execAddrObj() : void
+	public static function execAddrObj() : ConcreteReader
 	{
-		$model[] = DBFactory::getAddressInfoTable();
-		$model[] = DBFactory::getHousesTable();
+		return self::prepare(new AddressObject(), FILES['ADDR_OBJ']);
 
-
-		$bigReader[] = self::prepare(new AddressObject(), FILES['ADDR_OBJ']);
-		$bigReader[] = self::prepare(new AsHouses(), FILES['AS_HOUSES']);
-
-		foreach ($bigReader as $key => $task) {
-			$task->exec($model[$key]);
-		}
 	}
+	
+	public static function execHouses() : ConcreteReader
+	{
+		return self::prepare(new AsHouses(), FILES['AS_HOUSES']);
+
+	}
+
 
 	private static function prepare(ConcreteReader $reader, string $file) : ConcreteReader
 	{

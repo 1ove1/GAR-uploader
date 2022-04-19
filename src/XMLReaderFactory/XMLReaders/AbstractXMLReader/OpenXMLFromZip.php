@@ -47,9 +47,9 @@ trait OpenXMLFromZip
 	/**
 	 *  Method for open xml files from the path param
 	 * @param  string $pathToXml  path to the concrete xml file
-	 * @return \XMLReader         XMLReader object
+	 * @return \XMLReader|bool    XMLReader object or false
 	 */
-	public function openXML(string $pathToXml) : \XMLReader
+	public function openXML(string $pathToXml) : \XMLReader|bool
 	{
 		return \XMLReader::open($pathToXml);
 	}

@@ -5,9 +5,31 @@ require __DIR__ . '/vendor/autoload.php';
 use GAR\Uploader\XMLReaderFactory\XMLReaderFactory;
 use GAR\Uploader\DBFactory\DBFactory;
 
-// DBFactory::getAddressInfoTable();
+define('ITERS', 100);
 
-XMLReaderFactory::execAddrObj();
+$time = time();
+
+$models = [];
+$readers = [];
+
+$models = [
+  DBFactory::getAddressInfoTable(),
+  DBFactory::getHousesTable(),
+];
+
+for($i = ITERS; $i > 0; $i--) {
+  $readers[] = [
+    XMLReaderFactory::execAddrObj(),
+    XMLReaderFactory::execHouses(),  
+  ];
+}
+
+for($i = ITERS; $i > 0; $i--) {
+  $readers[$i-1][0]->exec($models[0]);
+  $readers[$i-1][1]->exec($models[1]);
+}
+
+print_r($time - time());
 
 // \GAR\Uploader\Log::write('enter to database...');
 // $connect = new PDO('mysql:host=localhost;dbname=address_info', 'user', 'password');

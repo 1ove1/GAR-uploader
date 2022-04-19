@@ -13,7 +13,7 @@ enum TestEnv : string {
 	case db 		= "address_info_tests";
 	case host 		= "localhost";
 	case user 		= "user";
-	case pass 		= "password";
+	case pass 		= "11899487";
 	case zipPath  	= __DIR__ . "/gar_delta_xml.zip";
 	case cachePath	= __DIR__ . "/.cache";
 	case logPath	= __DIR__ . "/.logs";

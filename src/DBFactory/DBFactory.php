@@ -4,8 +4,9 @@ namespace GAR\Uploader\DBFactory;
 
 use GAR\Uploader\DBFactory\DBFacade;
 use GAR\Uploader\DBFactory\Tables\{
-	AddressInfo,
-	Houses
+		ConcreteTable,
+		AddressInfo,
+    Houses
 };
 
 /**
@@ -16,16 +17,13 @@ use GAR\Uploader\DBFactory\Tables\{
  */
 final class DBFactory 
 {
-	/**
-	 * return address info table
-	 * @return void
-	 */
-	public static function getAddressInfoTable()
+	
+	public static function getAddressInfoTable() : ConcreteTable
 	{
 		return new AddressInfo(DBFacade::getInstance());
 	}
 
-	public static function getHousesTable()
+	public static function getHousesTable() : ConcreteTable
 	{
 		return new Houses(DBFacade::getInstance());
 	}

@@ -6,8 +6,7 @@ use GAR\Uploader\DBFactory\Tables\AbstractTable\{
 	AbstractTable, Queries, MetaTable
 };
 use GAR\Uploader\DBFactory\Tables\CreateTable;
-use GAR\Uploader\{Log, Msg};
-
+use GAR\Uploader\{Log, Msg, Env};
 
 /**
  * CONCRETE TABLE CLASS
@@ -35,14 +34,15 @@ abstract class ConcreteTable extends AbstractTable implements CreateTable
 					$createFields
 				);
 			}
-			parent::__construct($connection);
+
+			parent::__construct($connection, intval(Env::sqlInsertBuffer->value));
 			
 			Log::write(
 				Msg::LOG_DB_TABLE->value, 
 				$this->name, 
 				Msg::LOG_COMPLETE->value
 			);
-		} catch (PDOException $excp) {
+		} catch (\PDOException $excp) {
 			Log::error($excp);
 		}
 	}

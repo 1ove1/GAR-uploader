@@ -16,10 +16,13 @@ final class QueriesTest extends TestCase
 	const currTable = 'tests';
 	const insertField = 'message';
 
-	private ?PDO 	$PDO = null;
+	private ?\PDO 	$PDO = null;
 	private ?string $name = self::currTable;
 	private ?array 	$fields = null;
 	private ?array  $metaInfo = null;
+	protected int 		$currLzyInsStep = 0;
+	protected int 		$maxLzyInsStep = 1;
+	protected array 	$lzyInsSaver = [];
 	private ?\PDOStatement $PDOInsert = null;
 
 	protected function setUp() : void
@@ -33,6 +36,7 @@ final class QueriesTest extends TestCase
 
 		$this->fields = $this->getMetaInfo(self::currTable)['fields'];
 		$this->metaInfo = $this->getMetaInfo(self::currTable)['meta'];
+		$this->prepareInsertPDOStatement($this->maxLzyInsStep);
 
 		$this->PDO->exec('BEGIN');
 	}
@@ -94,8 +98,6 @@ final class QueriesTest extends TestCase
 	 */
 	public function testInsert() : void
 	{
-		$this->prepareInsertPDOStatement();
-
 		for ($iter = 5; $iter > 0; --$iter) {
 			$rnd = rand();
 			$select = sprintf(

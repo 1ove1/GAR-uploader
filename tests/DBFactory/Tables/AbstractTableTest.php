@@ -41,6 +41,8 @@ final class AbstractTableTest extends TestCase
 		$this->fields = $this->getMetaInfo(self::currTable)['fields'];
 		$this->metaInfo = $this->getMetaInfo(self::currTable)['meta'];
 
+		$this->prepareInsertPDOStatement(1);
+
 		$this->PDO->exec('BEGIN');
 	}
 
@@ -101,7 +103,6 @@ final class AbstractTableTest extends TestCase
 	 */
 	public function testInsert() : void
 	{
-		$this->prepareInsertPDOStatement();
 
 		$table = new Tests(DBFacade::getInstance());
 
@@ -114,7 +115,9 @@ final class AbstractTableTest extends TestCase
 				$rnd,
 			);
 
-			$this->insert([self::insertField => $rnd]);
+			$table->insert([self::insertField => $rnd]);
+			$table->save();
+
 
 			$this->assertEquals(
 				$this->PDO->query($select)->fetchAll(\PDO::FETCH_ASSOC)[0][self::insertField],

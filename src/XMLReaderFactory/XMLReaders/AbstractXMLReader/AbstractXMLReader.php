@@ -128,9 +128,9 @@ abstract class AbstractXMLReader implements \Iterator
 	/**
 	 *  Method for open xml files from the path param
 	 * @param  string $pathToXml path to the concrete xml file
-	 * @return \XMLReader         XMLReader object
+	 * @return \XMLReader\bool         XMLReader object or false
 	 */
-	public abstract function openXML(string $pathToXml) : \XMLReader;
+	public abstract function openXML(string $pathToXml) : \XMLReader|bool;
 
 	/**
 	 * 	ITERATORS METHODS

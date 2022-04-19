@@ -12,7 +12,7 @@ final class MetaTableTest extends TestCase
 
 	const currTable = 'tests';
 
-	private ?PDO 	$PDO = null;
+	private ?\PDO 	$PDO = null;
 
 	protected function setUp() : void
 	{

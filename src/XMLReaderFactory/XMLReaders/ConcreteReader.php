@@ -57,6 +57,8 @@ abstract class ConcreteReader extends AbstractXMLReader implements CustomReader,
 
 		if (!is_null($this->linkToAnother)) {
 			$this->linkToAnother->exec($model);
+		} else {
+			$model->save();
 		}
 	}
 
@@ -99,17 +101,21 @@ abstract class ConcreteReader extends AbstractXMLReader implements CustomReader,
 			try{
 				Log::write(Msg::LOG_XML_EXTRACT->value, $this->fileName);
 				$this->init();
-			} catch (Exception $excep) {
-				Log::error($excep, ['fileName' => $fileName]);
+			} catch (\Exception $excep) {
+				Log::error($excep, ['fileName' => $this->fileName]);
 			}
 		}
 
 		// open xml file
 		try{
 			Log::write(Msg::LOG_XML_READ->value, $this->fileName);
-			$this->reader = $this->openXML($this->pathToXml);
-
-		} catch (Exception $excep){
+			
+			if (!is_null($this->pathToXml)) {
+				$this->reader = $this->openXML($this->pathToXml);
+			} else {
+				throw new \Exception('unknown path to xml file ' . $this->fileName);
+			}
+		} catch (\Exception $excep){
 			Log::error($excep, ['fileName' => $this->fileName]);
 		}
 
