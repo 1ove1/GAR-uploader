@@ -1,22 +1,23 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\XMLReaderFactory\XMLReaders;
+namespace GAR\Uploader\Readers;
 
-use GAR\Uploader\XMLReaderFactory\XMLReaders\AbstractXMLReader\{
+use GAR\Uploader\Readers\AbstractXMLReader\{
 	AbstractXMLReader, 
 	IteratorXML, 
 	OpenXMLFromZip, 
 	CustomReader
 };
-use GAR\Uploader\XMLReaderFactory\XMLReaders\ShedulerObject;
-use GAR\Uploader\DBFactory\Tables\ConcreteTable;
+use GAR\Uploader\Readers\AbstractXMLReader\ShedulerObject;
+use GAR\Uploader\Models\ConcreteTable;
 use GAR\Uploader\{Env, Msg, Log};
 
 // define paths
 define('ZIP_PATH', ENV::zipPath->value);
 define('CACHE_PATH', ENV::cachePath->value);
 
-abstract class ConcreteReader extends AbstractXMLReader implements CustomReader, ShedulerObject
+abstract class ConcreteReader extends AbstractXMLReader 
+															implements CustomReader, ShedulerObject
 {
 	use IteratorXML, OpenXMLFromZip;
 
@@ -52,6 +53,8 @@ abstract class ConcreteReader extends AbstractXMLReader implements CustomReader,
 		foreach ($this as $value) {
 			$this->execDoWork($model, $value);
 		}
+
+		$model->save();
 
 		$this->__destruct();
 
@@ -99,17 +102,21 @@ abstract class ConcreteReader extends AbstractXMLReader implements CustomReader,
 			try{
 				Log::write(Msg::LOG_XML_EXTRACT->value, $this->fileName);
 				$this->init();
-			} catch (Exception $excep) {
-				Log::error($excep, ['fileName' => $fileName]);
+			} catch (\Exception $excep) {
+				Log::error($excep, ['fileName' => $this->fileName]);
 			}
 		}
 
 		// open xml file
 		try{
 			Log::write(Msg::LOG_XML_READ->value, $this->fileName);
-			$this->reader = $this->openXML($this->pathToXml);
-
-		} catch (Exception $excep){
+			
+			if (!is_null($this->pathToXml)) {
+				$this->reader = $this->openXML($this->pathToXml);
+			} else {
+				throw new \Exception('unknown path to xml file ' . $this->fileName);
+			}
+		} catch (\Exception $excep){
 			Log::error($excep, ['fileName' => $this->fileName]);
 		}
 

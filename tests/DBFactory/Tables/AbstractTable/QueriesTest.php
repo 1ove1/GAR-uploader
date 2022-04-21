@@ -2,23 +2,49 @@
 
 use PHPUnit\Framework\TestCase;
 
-use GAR\Uploader\DBFactory\Tables\AbstractTable\{
+use GAR\Uploader\Models\AbstractTable\{
 	Queries,
 	MetaTable
 };
 use GAR\Uploader\DBFactory\DBFacade;
+use GAR\Tests\TestEnv;
 
 final class QueriesTest extends TestCase
 {
 	use Queries, MetaTable;
 
 	const currTable = 'tests';
+	const insertField = 'message';
 
-	private ?PDO 	$PDO = null;
+	private ?\PDO 	$PDO = null;
 	private ?string $name = self::currTable;
 	private ?array 	$fields = null;
 	private ?array  $metaInfo = null;
+	protected int 		$currLzyInsStep = 0;
+	protected int 		$maxLzyInsStep = 1;
+	protected array 	$lzyInsSaver = [];
 	private ?\PDOStatement $PDOInsert = null;
+
+	protected function setUp() : void
+	{
+		$this->PDO = DBFacade::getInstance(TestEnv::class);		
+		$this->PDO->exec(
+			sprintf(
+				'CREATE TABLE IF NOT EXISTS %s(id INTEGER auto_increment PRIMARY KEY, message INTEGER);',
+				self::currTable,
+		));	
+
+		$this->fields = $this->getMetaInfo(self::currTable)['fields'];
+		$this->metaInfo = $this->getMetaInfo(self::currTable)['meta'];
+		$this->prepareInsertPDOStatement($this->maxLzyInsStep);
+
+		$this->PDO->exec('BEGIN');
+	}
+
+	protected function tearDown() : void
+	{
+		$this->PDO->exec('ROLLBACK');
+	}
 
 	/**
 	 *  select test (full, id, message, where)
@@ -26,9 +52,9 @@ final class QueriesTest extends TestCase
 	 */
 	public function testSelect() : void 
 	{
-		$this->PDO = DBFacade::getInstance();
 
 		$query = 'SELECT * FROM ' . self::currTable;
+
 		$this->assertEquals(
 			$this->PDO->query($query)
 					  ->fetchAll(\PDO::FETCH_ASSOC), 
@@ -36,8 +62,12 @@ final class QueriesTest extends TestCase
 			$query
 		);
 
-		foreach ($this->getMetaInfo(self::currTable)['fields'] as $field) {
-			$query = 'SELECT ' . $field. ' FROM ' . self::currTable;
+		foreach ($this->fields as $field) {
+			$query = sprintf(
+				'SELECT %s FROM %s',
+				$field,
+				self::currTable,
+			);
 
 			$this->assertEquals(
 				$this->PDO->query($query)->fetchAll(\PDO::FETCH_ASSOC), 
@@ -46,7 +76,12 @@ final class QueriesTest extends TestCase
 			);	
 
 			foreach (['<', '<=', '=' , '>', '>='] as $sign) {
-				$query = 'SELECT * FROM ' . self::currTable . ' WHERE ' . $field . $sign . '2';
+				$query = sprintf(
+					'SELECT * FROM %s WHERE %s%s2',
+					self::currTable,
+					$field,
+					$sign,
+				);
 
 				$this->assertEquals(
 					$this->PDO->query($query)->fetchAll(\PDO::FETCH_ASSOC), 
@@ -63,18 +98,19 @@ final class QueriesTest extends TestCase
 	 */
 	public function testInsert() : void
 	{
-		$this->PDO = DBFacade::getInstance();
-		$this->metaInfo = $this->getMetaInfo(self::currTable)['meta'];
-		$this->prepareInsertPDOStatement();
-
 		for ($iter = 5; $iter > 0; --$iter) {
 			$rnd = rand();
-			$select = 'SELECT message FROM ' . self::currTable . ' WHERE message=' . $rnd;
+			$select = sprintf(
+				'SELECT %1$s FROM %2$s WHERE %1$s=%3$s',
+				self::insertField,
+				self::currTable,
+				$rnd,
+			);
 
-			$this->insert(['message' => $rnd]);
+			$this->insert([self::insertField => $rnd]);
 
 			$this->assertEquals(
-				$this->PDO->query($select)->fetchAll(\PDO::FETCH_ASSOC)[0]['message'],
+				$this->PDO->query($select)->fetchAll(\PDO::FETCH_ASSOC)[0][self::insertField],
 				$rnd,
 				'test insert query with ' . $rnd
 			);

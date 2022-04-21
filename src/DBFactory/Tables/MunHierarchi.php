@@ -6,29 +6,26 @@ use GAR\Uploader\Models\ConcreteTable;
 
 
 /**
- * AS HOUSES CLASS-MODEL
+ * ADDRESS INFO CLASS-MODEL
  *
  * EXTENDS CONCRETE TABLE AND USING FOR COMMUNICATE
  * WITH TABLE 'address_info'
  */
-class Houses extends ConcreteTable 
+class MunHierarchi extends ConcreteTable 
 {
 	public function getFieldsToCreate() : array 
 	{
 		return [
-			'id_houses' => [
+			'id_mun' => [
 				'CHAR(50)',
 			],
-			'objectid_houses' => [
+			'objectid_mun' => [
 				'CHAR(50)',
 			],
-			'objectguid_houses' => [
+			'parentobjid_mun' => [
 				'CHAR(50)',
 			],
-			'housenum_houses' => [
-				'CHAR(100)',
-			],
-			'housetype_houses' => [
+      'oktmo_mun' => [
 				'CHAR(50)',
 			],
 		];

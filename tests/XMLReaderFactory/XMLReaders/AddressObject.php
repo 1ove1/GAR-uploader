@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-use GAR\Uploader\XMLReaderFactory\XMLReaders\AddressObject;
+use GAR\Uploader\Readers\AddressObject;
 
 use GAR\Uploader\DBFactory\DBFactory;
 

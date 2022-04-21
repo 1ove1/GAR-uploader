@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\DBFactory\Tables\AbstractTable;
+namespace GAR\Uploader\Models\AbstractTable;
 
 
 /**
@@ -16,6 +16,25 @@ abstract class AbstractTable
 	 * @var null
 	 */
 	protected ?string $name = null;
+
+	/**
+	 *  curr lazy insert step
+	 * @var 0
+	 */
+	protected int 		$currLzyInsStep = 0;
+
+	/**
+	 * max lazy insert step
+	 *
+	 * @var integer
+	 */
+	protected int 		$maxLzyInsStep;
+
+	/**
+	 *  contains temp lazyInsertData
+	 * @var []
+	 */
+	protected array 	$lzyInsSaver = [];
 
 	/**
 	 *  table fields
@@ -49,8 +68,10 @@ abstract class AbstractTable
 	 * actual fields of table and other		
 	 * @param \PDO $connection connected PDO object
 	 */
-	public function __construct(\PDO $connection) {
-		// init PDO
+	public function __construct(\PDO $connection, int $maxLzyInsStep) {
+		// set maxLzyInsStep
+		$this->maxLzyInsStep = $maxLzyInsStep;
+ 		// init PDO
 		$this->PDO = $connection;
 		// find name using child class name
 		$this->name = $this->getTableName(get_class($this));
@@ -58,7 +79,7 @@ abstract class AbstractTable
 		['meta' => $this->metaInfo, 'fields' => $this->fields] = $this->getMetaInfo($this->name);
 
 		// prepare Insert Statement
-		$this->prepareInsertPDOStatement();
+		$this->prepareInsertPDOStatement($maxLzyInsStep);
 	}
 
 	/**
@@ -81,9 +102,10 @@ abstract class AbstractTable
 
 	/**
 	 *  prepare PDO Statements for curr table using properties
+	 * @var $maxLzyInsStep
 	 * @return void 
 	 */
-	protected abstract function prepareInsertPDOStatement(): void;
+	protected abstract function prepareInsertPDOStatement(int $lzyInsStep): void;
 
 	/**
 	 * DATABASE QUERIES
@@ -104,4 +126,11 @@ abstract class AbstractTable
 	 * @return voids
 	 */
 	public abstract function insert(array $fields_values) : void;
+
+	/**
+	 *  making end-query (use lazy insert)
+	 *
+	 * @return void
+	 */
+	public abstract function save() : void;
 }

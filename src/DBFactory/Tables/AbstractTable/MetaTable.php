@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\DBFactory\Tables\AbstractTable;
+namespace GAR\Uploader\Models\AbstractTable;
 
 
 /**
@@ -63,25 +63,41 @@ trait MetaTable
 
 	/**
 	 *  prepare PDO Statements for curr table using properties
+	 * @param 	int	$lzyInsStep	step by lazy insert
 	 * @return void 
 	 */
-	protected function prepareInsertPDOStatement(): void
+	protected function prepareInsertPDOStatement(int $lzyInsStep): void
 	{
 		if (is_null($this->name) && is_null($this->metaInfo)) {
-			throw new \Exception('bad properties');
+			throw new \Exception(sprintf(
+				"bad properties:\n name => %s\nfields => %s",
+				$this->name,
+				$this->fields,
+			));
 		}
-
+		if ($lzyInsStep < 0) {
+			throw new \Exception(sprintf(
+				"invalid group insert value:\nlzyInsStep %s",
+				$lzyInsStep,
+			));
+		}
 
 		$fields_names = [];
 		$vars = [];
 		foreach ($this->metaInfo as $field) {
 			if ($field['Extra'] !== 'auto_increment') {
 				$fields_names[] = $field['Field'];
+				$vars[] = '?';
 			}
 		}
 
-		$query = 'INSERT INTO ' . $this->name . ' (' . implode(',', $fields_names) . 
-				') VALUES (:' . implode(',:', $fields_names) . ')'; 
+		$query = sprintf(
+			'INSERT INTO %s(%s) VALUES %s',
+				$this->name,
+				implode(',', $fields_names),
+				substr(str_repeat('(' . implode(', ', $vars) . '),', $lzyInsStep), 0, -1),
+		); 
+
 
 		$this->PDOInsert = $this->PDO->prepare($query);
 	}

@@ -2,18 +2,22 @@
 
 namespace GAR\Uploader\XMLReaderFactory;
 
-use GAR\Uploader\XMLReaderFactory\XMLReaders\{
+use GAR\Uploader\Models\AddressObjectParams as ModelsAddressObjectParams;
+use GAR\Uploader\Readers\{
 	ConcreteReader,
-	AddressObject,
-	AsHouses
-};
-use GAR\Uploader\DBFactory\{
-	DBFactory,
+	AsAddressObject,
+	AsHouses,
+	AsAdminHierarchi,
+	AsMunHierarchi,
+	AsAddressObjectParams,
 };
 
 const FILES = [
 	'AS_HOUSES' => 'AS_HOUSES', 
-	'ADDR_OBJ' => 'AS_ADDR_OBJ'
+	'ADDR_OBJ' => 'AS_ADDR_OBJ',
+	'ADMIN_HIERARCHI' => 'AS_ADM_HIERARCHY',
+	'MUN_HIERARCHI' => 'AS_MUN_HIERARCHY',
+	'ADDR_OBJ_PARAMS' => 'AS_ADDR_OBJ_PARAMS',
 ];
 
 
@@ -33,18 +37,34 @@ class XMLReaderFactory
 
 	]; 	
 	
-	public static function execAddrObj() : void
+	public static function execAddrObj() : ConcreteReader
 	{
-		$model[] = DBFactory::getAddressInfoTable();
-		$model[] = DBFactory::getHousesTable();
+		return self::prepare(new AsAddressObject(), FILES['ADDR_OBJ']);
 
+	}
 
-		$bigReader[] = self::prepare(new AddressObject(), FILES['ADDR_OBJ']);
-		$bigReader[] = self::prepare(new AsHouses(), FILES['AS_HOUSES']);
+	public static function execAddressObjParams() : ConcreteReader
+	{
+		return self::prepare(new AsAddressObjectParams(), FILES['ADDR_OBJ_PARAMS']);
 
-		foreach ($bigReader as $key => $task) {
-			$task->exec($model[$key]);
-		}
+	}
+	
+	public static function execHouses() : ConcreteReader
+	{
+		return self::prepare(new AsHouses(), FILES['AS_HOUSES']);
+
+	}
+
+	public static function execAdminHierarchi() : ConcreteReader
+	{
+		return self::prepare(new AsAdminHierarchi(), FILES['ADMIN_HIERARCHI']);
+
+	}
+
+	public static function execMunHierachi() : ConcreteReader
+	{
+		return self::prepare(new AsMunHierarchi(), FILES['MUN_HIERARCHI']);
+
 	}
 
 	private static function prepare(ConcreteReader $reader, string $file) : ConcreteReader

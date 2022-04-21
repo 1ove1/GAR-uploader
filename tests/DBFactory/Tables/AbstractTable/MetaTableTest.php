@@ -2,42 +2,52 @@
 
 use PHPUnit\Framework\TestCase;
 
-use GAR\Uploader\DBFactory\Tables\AbstractTable\{
-	MetaTable,
-	Queries
-};
+use GAR\Uploader\Models\AbstractTable\MetaTable;
 use GAR\Uploader\DBFactory\DBFacade;
+use GAR\Tests\TestEnv;
 
 final class MetaTableTest extends TestCase
 {
-	use Queries, MetaTable;
+	use MetaTable;
 
 	const currTable = 'tests';
 
-	private ?PDO 	$PDO = null;
-	private ?string $name = self::currTable;
-	private ?array 	$fields = null;
-	private ?array  $metaInfo = null;
-	private ?\PDOStatement $PDOInsert = null;
+	private ?\PDO 	$PDO = null;
 
-	/**
-	 *  simple compare
-	 * @return void
-	 */
-	public function testGetTableName() : void 
+	protected function setUp() : void
 	{
-		$input = 'SomeName';
-		$output = 'some_name';
+		$this->PDO = DBFacade::getInstance(TestEnv::class);
+		$this->PDO->exec(
+			sprintf(
+				'CREATE TABLE IF NOT EXISTS %s(id INTEGER auto_increment PRIMARY KEY, message INTEGER);',
+				self::currTable,
+		));	
 
-		$this->assertEquals($output, $this->getTableName($input	));
+		$this->PDO->exec('BEGIN');
+	}	
+
+	protected function tearDown() : void
+	{
+		$this->PDO->exec('ROLLBACK');
 	}
+
+	// /**
+	//  *  simple compare
+	//  * @return void
+	//  */
+	// public function testGetTableName() : void 
+	// {
+	// 	$input = 'SomeName';
+	// 	$output = 'some_name';
+
+	// 	$this->assertEquals($output, $this->getTableName($input	));
+	// }
 
 	/**
 	 *  meta info
 	 * @return 
 	 */
 	public function testMetaInfo() {
-		$this->PDO = DBFacade::getInstance();
 		$clearQuery = $this->PDO->query('DESCRIBE ' . self::currTable)->
 						fetchAll(\PDO::FETCH_COLUMN);
 

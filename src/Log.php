@@ -16,10 +16,10 @@ class Log
 	/**
 	 *  getting message to log and additional params (strings) 
 	 * @param  string $message message to log
-	 * @param  string $params  other (maybe name of files or other info)
+	 * @param  ?string $params  other (maybe name of files or other info)
 	 * @return void
 	 */
-	public static function write(string $message, string ...$params) : void
+	public static function write(string $message, ?string ...$params) : void
 	{
 		if (!defined('CURR_LOG_FILE')) {
 			self::launch();
@@ -99,9 +99,9 @@ class Log
 
 			if (self::addTask() > self::removeTask()) {
 				echo sprintf("Прогресс: %d%% (%d из %d)", 
-					self::removeTask() * 100 / self::addTask(),
+					self::removeTask() * 100 / (self::addTask() - 1),
 					self::removeTask(),
-					self::addTask()
+					self::addTask() - 1
 				);
 			}
 		}
@@ -145,7 +145,7 @@ class Log
 
 	/**
 	 * return curr message format
-	 * @return void
+	 * @return string
 	 */
 	private static function currTime() : string
 	{

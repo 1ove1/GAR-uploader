@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\DBFactory\Tables\AbstractTable;
+namespace GAR\Uploader\Models\AbstractTable;
 
 
 /**
@@ -39,6 +39,49 @@ trait Queries
 	 */
 	public function insert(array $fields_values) : void
 	{
-		$this->PDOInsert->execute($fields_values);
+		$fields_values = array_values($fields_values);
+
+		$currLzyInsCount = count($this->lzyInsSaver);
+		$currInpValCount = count($fields_values);
+		$isValid = ($currLzyInsCount / $currInpValCount) === $this->currLzyInsStep;
+
+		if (empty($this->lzyInsSaver) || $isValid) {
+			$this->lzyInsSaver = array_merge($this->lzyInsSaver, $fields_values);
+			$this->currLzyInsStep++;
+			
+			
+			if ($this->currLzyInsStep === $this->maxLzyInsStep) {
+				$this->save();
+				$this->resetLzyIns();
+			}
+
+		} else {
+			throw new \InvalidArgumentException(sprintf(
+				"param 'fields_values' contains %d values but need %d:\nfields_values => %s",
+				$currInpValCount,
+				$currLzyInsCount,
+				implode(', ', $fields_values),
+			));
+		}
+	}
+
+	public function save() : void 
+	{
+		if (empty($this->lzyInsSaver)) {
+			return;
+		}
+
+		if ($this->currLzyInsStep !== $this->maxLzyInsStep) {
+			$this->prepareInsertPDOStatement($this->currLzyInsStep);
+			$this->PDOInsert->execute($this->lzyInsSaver);
+			$this->prepareInsertPDOStatement($this->maxLzyInsStep);
+		} else {
+			$this->PDOInsert->execute($this->lzyInsSaver);
+		}
+	}
+
+	private function resetLzyIns() : void {
+		$this->currLzyInsStep = 0;
+		$this->lzyInsSaver = [];
 	}
 }
