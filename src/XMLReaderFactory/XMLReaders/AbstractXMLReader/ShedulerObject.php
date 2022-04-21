@@ -1,8 +1,7 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\Readers;
+namespace GAR\Uploader\Readers\AbstractXMLReader;
 
-use GAR\Uploader\Readers\ConcreteReader;
 use GAR\Uploader\Models\ConcreteTable;
 
 interface ShedulerObject

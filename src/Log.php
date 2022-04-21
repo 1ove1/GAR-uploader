@@ -99,9 +99,9 @@ class Log
 
 			if (self::addTask() > self::removeTask()) {
 				echo sprintf("Прогресс: %d%% (%d из %d)", 
-					self::removeTask() * 100 / self::addTask(),
+					self::removeTask() * 100 / (self::addTask() - 1),
 					self::removeTask(),
-					self::addTask()
+					self::addTask() - 1
 				);
 			}
 		}

@@ -3,9 +3,11 @@
 namespace GAR\Uploader\Models;
 
 use GAR\Uploader\Models\AbstractTable\{
-	AbstractTable, Queries, MetaTable
+	AbstractTable, 
+	Queries, 
+	MetaTable, 
+	CreateTable
 };
-use GAR\Uploader\Models\CreateTable;
 use GAR\Uploader\{Log, Msg, Env};
 
 /**

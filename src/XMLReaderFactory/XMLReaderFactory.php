@@ -2,15 +2,22 @@
 
 namespace GAR\Uploader\XMLReaderFactory;
 
+use GAR\Uploader\Models\AddressObjectParams as ModelsAddressObjectParams;
 use GAR\Uploader\Readers\{
 	ConcreteReader,
-	AddressObject,
-	AsHouses
+	AsAddressObject,
+	AsHouses,
+	AsAdminHierarchi,
+	AsMunHierarchi,
+	AsAddressObjectParams,
 };
 
 const FILES = [
 	'AS_HOUSES' => 'AS_HOUSES', 
-	'ADDR_OBJ' => 'AS_ADDR_OBJ'
+	'ADDR_OBJ' => 'AS_ADDR_OBJ',
+	'ADMIN_HIERARCHI' => 'AS_ADM_HIERARCHY',
+	'MUN_HIERARCHI' => 'AS_MUN_HIERARCHY',
+	'ADDR_OBJ_PARAMS' => 'AS_ADDR_OBJ_PARAMS',
 ];
 
 
@@ -32,7 +39,13 @@ class XMLReaderFactory
 	
 	public static function execAddrObj() : ConcreteReader
 	{
-		return self::prepare(new AddressObject(), FILES['ADDR_OBJ']);
+		return self::prepare(new AsAddressObject(), FILES['ADDR_OBJ']);
+
+	}
+
+	public static function execAddressObjParams() : ConcreteReader
+	{
+		return self::prepare(new AsAddressObjectParams(), FILES['ADDR_OBJ_PARAMS']);
 
 	}
 	
@@ -42,6 +55,17 @@ class XMLReaderFactory
 
 	}
 
+	public static function execAdminHierarchi() : ConcreteReader
+	{
+		return self::prepare(new AsAdminHierarchi(), FILES['ADMIN_HIERARCHI']);
+
+	}
+
+	public static function execMunHierachi() : ConcreteReader
+	{
+		return self::prepare(new AsMunHierarchi(), FILES['MUN_HIERARCHI']);
+
+	}
 
 	private static function prepare(ConcreteReader $reader, string $file) : ConcreteReader
 	{

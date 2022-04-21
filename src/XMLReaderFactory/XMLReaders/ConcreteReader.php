@@ -8,7 +8,7 @@ use GAR\Uploader\Readers\AbstractXMLReader\{
 	OpenXMLFromZip, 
 	CustomReader
 };
-use GAR\Uploader\Readers\ShedulerObject;
+use GAR\Uploader\Readers\AbstractXMLReader\ShedulerObject;
 use GAR\Uploader\Models\ConcreteTable;
 use GAR\Uploader\{Env, Msg, Log};
 
@@ -16,7 +16,8 @@ use GAR\Uploader\{Env, Msg, Log};
 define('ZIP_PATH', ENV::zipPath->value);
 define('CACHE_PATH', ENV::cachePath->value);
 
-abstract class ConcreteReader extends AbstractXMLReader implements CustomReader, ShedulerObject
+abstract class ConcreteReader extends AbstractXMLReader 
+															implements CustomReader, ShedulerObject
 {
 	use IteratorXML, OpenXMLFromZip;
 
@@ -53,12 +54,12 @@ abstract class ConcreteReader extends AbstractXMLReader implements CustomReader,
 			$this->execDoWork($model, $value);
 		}
 
+		$model->save();
+
 		$this->__destruct();
 
 		if (!is_null($this->linkToAnother)) {
 			$this->linkToAnother->exec($model);
-		} else {
-			$model->save();
 		}
 	}
 

@@ -5,7 +5,7 @@ require __DIR__ . '/vendor/autoload.php';
 use GAR\Uploader\XMLReaderFactory\XMLReaderFactory;
 use GAR\Uploader\DBFactory\DBFactory;
 
-define('ITERS', 100);
+define('ITERS', 1);
 
 $time = time();
 
@@ -13,20 +13,29 @@ $models = [];
 $readers = [];
 
 $models = [
-  DBFactory::getAddressInfoTable(),
+  DBFactory::getAddressObjectTable(),
+  DBFactory::getAddressObjectParamsTable(),
   DBFactory::getHousesTable(),
+  DBFactory::getAdminTable(),
+  DBFactory::getMunTable(),
 ];
 
 for($i = ITERS; $i > 0; $i--) {
   $readers[] = [
     XMLReaderFactory::execAddrObj(),
+    XMLReaderFactory::execAddressObjParams(),
     XMLReaderFactory::execHouses(),  
+    XMLReaderFactory::execAdminHierarchi(),
+    XMLReaderFactory::execMunHierachi(),
   ];
 }
 
 for($i = ITERS; $i > 0; $i--) {
   $readers[$i-1][0]->exec($models[0]);
   $readers[$i-1][1]->exec($models[1]);
+  $readers[$i-1][2]->exec($models[2]);
+  $readers[$i-1][3]->exec($models[3]);
+  $readers[$i-1][4]->exec($models[4]);
 }
 
 print_r($time - time());

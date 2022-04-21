@@ -5,8 +5,11 @@ namespace GAR\Uploader\DBFactory;
 use GAR\Uploader\DBFactory\DBFacade;
 use GAR\Uploader\Models\{
 		ConcreteTable,
-		AddressInfo,
-    Houses
+	  AddrObj,
+	 	AddrObjParams,
+    Houses,
+		AdminHierarchi,
+		MunHierarchi,
 };
 
 /**
@@ -18,13 +21,28 @@ use GAR\Uploader\Models\{
 final class DBFactory 
 {
 	
-	public static function getAddressInfoTable() : ConcreteTable
+	public static function getAddressObjectTable() : ConcreteTable
 	{
-		return new AddressInfo(DBFacade::getInstance());
+		 return new AddrObj(DBFacade::getInstance());
+	}
+
+	public static function getAddressObjectParamsTable() : ConcreteTable
+	{
+			return new AddrObjParams(DBFacade::getInstance());
 	}
 
 	public static function getHousesTable() : ConcreteTable
 	{
 		return new Houses(DBFacade::getInstance());
+	}
+
+	public static function getAdminTable() : ConcreteTable
+	{
+		return new AdminHierarchi(DBFacade::getInstance());
+	}
+
+	public static function getMunTable() : ConcreteTable
+	{
+		return new MunHierarchi(DBFacade::getInstance());
 	}
 }

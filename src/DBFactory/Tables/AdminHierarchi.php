@@ -11,29 +11,18 @@ use GAR\Uploader\Models\ConcreteTable;
  * EXTENDS CONCRETE TABLE AND USING FOR COMMUNICATE
  * WITH TABLE 'address_info'
  */
-class AddressInfo extends ConcreteTable 
+class AdminHierarchi extends ConcreteTable 
 {
 	public function getFieldsToCreate() : array 
 	{
 		return [
-			'id_addr' => [
-				'INTEGER', 
-				'auto_increment', 
-				'PRIMARY KEY',
-			],
-			'id' => [
+			'id_admin' => [
 				'CHAR(50)',
 			],
-			'objectid' => [
+			'objectid_admin' => [
 				'CHAR(50)',
 			],
-			'objectguid' => [
-				'CHAR(50)',
-			],
-			'name' => [
-				'CHAR(100)',
-			],
-			'typename' => [
+			'parentobjid_admin' => [
 				'CHAR(50)',
 			],
 		];

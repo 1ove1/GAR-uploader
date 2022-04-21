@@ -5,20 +5,20 @@ namespace GAR\Uploader\Readers;
 use GAR\Uploader\Readers\ConcreteReader;
 use GAR\Uploader\Models\ConcreteTable;
 	
-class AddressObject extends ConcreteReader 
+class AsAddressObjectParams extends ConcreteReader 
 {
 	public static function getElements() : array {
-		return ['OBJECT'];
+		return ['PARAM'];
 	}
 
 	public static function getAttributes() : array {
-		return ['ID', 'OBJECTID', 'OBJECTGUID', 'NAME', 'TYPENAME', 'ISACTUAL', 'ISACTIVE'];
+		return ['ID', 'OBJECTID', 'TYPEID', 'VALUE'];
 	}
 
 	public function execDoWork(ConcreteTable $model, array $value) : void
 	{
-		if ($value['isactive'] === "1" && $value['isactual'] === "1") {
-			$model->insert(array_diff_key($value, array_flip(['isactual', 'isactive'])));
-		}
+    if (in_array($value['typeid'], ['6', '7', '11'])) {
+      $model->insert($value);
+    }
 	}
 }
