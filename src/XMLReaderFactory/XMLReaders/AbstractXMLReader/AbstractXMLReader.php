@@ -8,51 +8,51 @@ use GAR\Uploader\Readers\AbstractXMLReader\CustomReader;
 /**
  * ABSTRACTXMLREADER INTERFACE
  *
- * DEFINES AND INMPLEMENTS SOME METHODS
+ * DEFINES AND IMPLEMENTS SOME METHODS
  * THAT NEEDS TO PARSE XML FILE
  */
 abstract class AbstractXMLReader implements \Iterator
 {
 	/**
 	 *  path to concrete zip file
-	 * @var
-	 */
+	 * @var string
+     */
 	protected string $pathToZip;
 
 	/**
 	 *  path to cache floder
-	 * @var 
-	 */
+	 * @var string
+     */
 	protected string $cachePath;
 
 	/**
 	 *  xml-file name
-	 * @var 
-	 */
+	 * @var string
+     */
 	protected string $fileName;
 
 	/**
 	 *  full path to xml in cache floder
-	 * @var null
-	 */
+	 * @var string|null
+     */
 	protected ?string $pathToXml = null;
 
 	/**
 	 *  XMLReader object
-	 * @var null
-	 */
+	 * @var \XMLReader|null
+     */
 	protected ?\XMLReader $reader = null;
 
 	/**
-	 *  elems of xml-file that could be parse
-	 * @var null
-	 */
+	 *  elems of xml-file that we will parse
+	 * @var array|null
+     */
 	protected ?array $elems = null;
 
 	/**
-	 *  attributes of xml-file that could be parse
-	 * @var null
-	 */
+	 *  attributes of xml-file that we will parse
+	 * @var array|null
+     */
 	protected ?array $attrs = null;
 
 
@@ -85,8 +85,8 @@ abstract class AbstractXMLReader implements \Iterator
 
 	/**
 	 * extract xml-file from zip, getting right names 
-	 * of xml-file (if we getting cutted string by 
-	 * the fileName) and init felds if chiled object 
+	 * of xml-file (if we're getting cut string by
+	 * the fileName) and init fields if children object
 	 * implement interface CustomObject
 	 * @return void
 	 */
@@ -125,11 +125,11 @@ abstract class AbstractXMLReader implements \Iterator
 												string $fileName, 
 												string $cachePath) : string;
 
-	/**
-	 *  Method for open xml files from the path param
-	 * @param  string $pathToXml path to the concrete xml file
-	 * @return \XMLReader\bool         XMLReader object or false
-	 */
+    /**
+     *  Method for open xml files from the path param
+     * @param string $pathToXml path to the concrete xml file
+     * @return \XMLReader|bool XMLReader object or false
+     */
 	public abstract function openXML(string $pathToXml) : \XMLReader|bool;
 
 	/**

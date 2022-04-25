@@ -8,8 +8,8 @@ use GAR\Uploader\Models\{
 	  AddrObj,
 	 	AddrObjParams,
     Houses,
-		AdminHierarchi,
-		MunHierarchi,
+		AdminHierarchy,
+		MunHierarchy,
 };
 
 /**
@@ -38,11 +38,11 @@ final class DBFactory
 
 	public static function getAdminTable() : ConcreteTable
 	{
-		return new AdminHierarchi(DBFacade::getInstance());
+		return new AdminHierarchy(DBFacade::getInstance());
 	}
 
 	public static function getMunTable() : ConcreteTable
 	{
-		return new MunHierarchi(DBFacade::getInstance());
+		return new MunHierarchy(DBFacade::getInstance());
 	}
 }

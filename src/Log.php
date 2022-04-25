@@ -4,7 +4,7 @@ namespace GAR\Uploader;
 
 
 // path to the log directory
-define('LOG_PATH', \GAR\Uploader\Env::logPath->value);
+define('LOG_PATH', Env::logPath->value);
 set_exception_handler([Log::class, 'error']);
 
 /**
@@ -13,12 +13,12 @@ set_exception_handler([Log::class, 'error']);
 class Log
 {
 
-	/**
-	 *  getting message to log and additional params (strings) 
-	 * @param  string $message message to log
-	 * @param  ?string $params  other (maybe name of files or other info)
-	 * @return void
-	 */
+    /**
+     *  getting message to log and additional params (strings)
+     * @param string $message message to log
+     * @param string|null ...$params other (maybe name of files or other info)
+     * @return void
+     */
 	public static function write(string $message, ?string ...$params) : void
 	{
 		if (!defined('CURR_LOG_FILE')) {
@@ -79,7 +79,7 @@ class Log
 			str_replace(' ', '_', self::currTime())
 		));
 
-		self::put(\GAR\Uploader\Msg::LOG_LAUNCH->value . PHP_EOL);
+		self::put(Msg::LOG_LAUNCH->value . PHP_EOL);
 	} 
 
 	/**
@@ -109,7 +109,7 @@ class Log
 
 	/**
 	 * add task to progress badd
-	 * @param 	int|integer $add task weight
+	 * @param 	int $add task weight
 	 * @return 	int  	total tasks count
 	 */
 	public static function addTask(int $add = 0) : int 
@@ -127,7 +127,7 @@ class Log
 
 	/**
 	 * remove task in a progress bar 
-	 * @param  int|integer $dec weight of task
+	 * @param  int $dec weight of task
 	 * @return int         removed task count
 	 */
 	public static function removeTask(int $dec = 0) : int

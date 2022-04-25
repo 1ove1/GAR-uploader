@@ -5,7 +5,7 @@ namespace GAR\Uploader\Readers;
 use GAR\Uploader\Readers\ConcreteReader;
 use GAR\Uploader\Models\ConcreteTable;
 	
-class AsAdminHierarchi extends ConcreteReader 
+class AsAdminHierarchy extends ConcreteReader
 {
 	public static function getElements() : array {
 		return ['ITEM'];

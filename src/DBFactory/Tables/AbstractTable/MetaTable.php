@@ -11,11 +11,12 @@ namespace GAR\Uploader\Models\AbstractTable;
 trait MetaTable
 {
 
-	/**
-	 * Class name to class table (CamelCase to snake_case)
-	 * @param  string $className Class name
-	 * @return string 	         Table name
-	 */
+    /**
+     * Class name to class table (CamelCase to snake_case)
+     * @param string $className Class name
+     * @return string             Table name
+     * @throws \Exception
+     */
 	protected function getTableName(string $className) : string
 	{
 		// remove some ..\\..\\..\\ClassName prefix
@@ -30,7 +31,7 @@ trait MetaTable
 			$tableName .= $char;
 		}
 
-		if (!preg_match('/^[a-zA-Z]{1}[a-zA-Z_]{1,18}$/',$tableName)) {
+		if (!preg_match('/^[a-zA-Z][a-zA-Z_]{1,18}$/',$tableName)) {
 			throw new \Exception('invalid table name :' . $tableName);
 		}
 			
@@ -38,34 +39,33 @@ trait MetaTable
 
 	}
 
-	/**
-	 *  getting meta info from table meta (only for mysql)
-	 * @param  string $tableName name of table (probably $this->name)
-	 * @return string  			 table meta info and table fields
-	 */
+    /**
+     *  getting meta info from table meta (only for mysql)
+     * @param string $tableName name of table (probably $this->name)
+     * @return array table meta info and table fields
+     */
 	protected function getMetaInfo(string $tableName) : array
 	{
 		$metaInfo = [];
 		$tableFields = [];
 
 		try {
-			if (\GAR\Uploader\Env::db_type->value === 'mysql') {
-				$query = 'DESCRIBE ' . $tableName;
+            $query = 'DESCRIBE ' . $tableName;
 
-				$metaInfo = $this->PDO->query($query)->fetchAll(\PDO::FETCH_ASSOC);
-				$tableFields = $this->PDO->query($query)->fetchAll(\PDO::FETCH_COLUMN);
-			}
+            $metaInfo = $this->PDO->query($query)->fetchAll(\PDO::FETCH_ASSOC);
+            $tableFields = $this->PDO->query($query)->fetchAll(\PDO::FETCH_COLUMN);
 		} catch (\PDOException $exception) {
 			echo $exception->getMessage() . ' : ' . $exception->getCode();
 		}
 		return ['meta' => $metaInfo, 'fields' => $tableFields];
 	}
 
-	/**
-	 *  prepare PDO Statements for curr table using properties
-	 * @param 	int	$lzyInsStep	step by lazy insert
-	 * @return void 
-	 */
+    /**
+     *  prepare PDO Statements for curr table using properties
+     * @param int $lzyInsStep step by lazy insert
+     * @return void
+     * @throws \Exception
+     */
 	protected function prepareInsertPDOStatement(int $lzyInsStep): void
 	{
 		if (is_null($this->name) && is_null($this->metaInfo)) {

@@ -31,17 +31,17 @@ final class MetaTableTest extends TestCase
 		$this->PDO->exec('ROLLBACK');
 	}
 
-	// /**
-	//  *  simple compare
-	//  * @return void
-	//  */
-	// public function testGetTableName() : void 
-	// {
-	// 	$input = 'SomeName';
-	// 	$output = 'some_name';
+	/**
+	 *  simple compare
+	 * @return void
+	 */
+	public function testGetTableName() : void 
+	{
+		$input = 'SomeName';
+		$output = 'some_name';
 
-	// 	$this->assertEquals($output, $this->getTableName($input	));
-	// }
+		$this->assertEquals($output, $this->getTableName($input	));
+	}
 
 	/**
 	 *  meta info

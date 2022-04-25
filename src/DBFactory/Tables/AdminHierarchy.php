@@ -11,7 +11,7 @@ use GAR\Uploader\Models\ConcreteTable;
  * EXTENDS CONCRETE TABLE AND USING FOR COMMUNICATE
  * WITH TABLE 'address_info'
  */
-class AdminHierarchi extends ConcreteTable 
+class AdminHierarchy extends ConcreteTable
 {
 	public function getFieldsToCreate() : array 
 	{

@@ -34,9 +34,9 @@ trait IteratorXML
 
 	/**
 	 * 	no available
-	 * @return null
+	 * @return string   curr filename
 	 */
-	public function key(): mixed
+	public function key(): string
 	{
 		return $this->fileName;
 	}

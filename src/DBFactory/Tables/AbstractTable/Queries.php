@@ -11,13 +11,13 @@ namespace GAR\Uploader\Models\AbstractTable;
 trait Queries
 {
 
-	/**
-	 *  Select method (simple sql query)
-	 * @param  string      $fields    fields that needs to select
-	 * @param  string|null $condition WHERE condition
-	 * @param  array|null  $element   WHERE element for condition
-	 * @return array 				  query result
-	 */
+    /**
+     *  Select method (simple sql query)
+     * @param array|string $fields fields that need to select
+     * @param string|null $condition WHERE condition
+     * @param array|null $element WHERE element for condition
+     * @return array                  query result
+     */
 	public function select(array|string $fields = '*', ?string $condition = null, ?array $element = null) : array 
 	{
 		$fields_str = (is_array($fields)) ? 

@@ -5,13 +5,14 @@ namespace GAR\Uploader\Readers\AbstractXMLReader;
 
 trait OpenXMLFromZip
 {
-	/**
-	 *  Extracting concrete file from zip archive into temp floder
-	 * @param  string $pathToZip  path to zip archive
-	 * @param  string $fileName   name of file or name like /[A-Za-z_-\/]+[0-9]/
-	 * @param  string $cachePath  apath to temp floder
-	 * @return string             return absolute path to extract file
-	 */
+    /**
+     *  Extracting concrete file from zip archive into temp floder
+     * @param string $pathToZip path to zip archive
+     * @param string $fileName name of file or name like /[A-Za-z_-\/]+[0-9]/
+     * @param string $cachePath apath to temp floder
+     * @return string             return absolute path to extract file
+     * @throws \Exception
+     */
 	public function extractFileFromZip(string $pathToZip, 
 									   string $fileName, 
 									   string $cachePath) : string
@@ -29,7 +30,7 @@ trait OpenXMLFromZip
 					break;
 				}
 
-				if (preg_match("/" . implode("\/", explode("/", $fileName)) . "_[0-9]+/", $realName)) {
+				if (preg_match("/" . implode("\/", explode("/", $fileName)) . "_\d+/", $realName)) {
 					$fileName = $realName;
 					break;
 				}

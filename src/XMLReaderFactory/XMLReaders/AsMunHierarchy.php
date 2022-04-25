@@ -5,7 +5,7 @@ namespace GAR\Uploader\Readers;
 use GAR\Uploader\Readers\ConcreteReader;
 use GAR\Uploader\Models\ConcreteTable;
 	
-class AsMunHierarchi extends ConcreteReader 
+class AsMunHierarchy extends ConcreteReader
 {
 	public static function getElements() : array {
 		return ['ITEM'];

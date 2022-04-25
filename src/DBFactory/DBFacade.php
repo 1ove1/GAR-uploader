@@ -19,11 +19,11 @@ class DBFacade
 	 */
 	public static ?\PDO $instance = null;
 
-	/**
-	 *  Get curr instance of database
-	 * @param  string   curr environmant object path
-	 * @return \PDO 		PDO-object with curr db connection
-	 */
+    /**
+     *  Get curr instance of database
+     * @param string|null $envClassName
+     * @return \PDO        PDO-object with curr db connection
+     */
 	public static function getInstance(?string $envClassName = null) : \PDO {
 		
 		if (self::$instance === null || !is_null($envClassName)) {
@@ -37,12 +37,12 @@ class DBFacade
 	}
 
 
-	/**
-	 *  Method to connetcn with database using
-	 *  Env.php file
-	 * @param 	strnig	$env 	className of environmant object
-	 * @return \PDO connected PDO-object
-	 */
+    /**
+     *  Method to connetcn with database using
+     *  Env.php file
+     * @param string $env className of environmant object
+     * @return \PDO connected PDO-object
+     */
 	public static function connect(string $env) : \PDO
 	{
 		$conf = call_user_func($env . '::toArray');

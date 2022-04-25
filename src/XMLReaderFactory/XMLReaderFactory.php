@@ -2,13 +2,12 @@
 
 namespace GAR\Uploader\XMLReaderFactory;
 
-use GAR\Uploader\Models\AddressObjectParams as ModelsAddressObjectParams;
 use GAR\Uploader\Readers\{
 	ConcreteReader,
 	AsAddressObject,
 	AsHouses,
-	AsAdminHierarchi,
-	AsMunHierarchi,
+	AsAdminHierarchy,
+	AsMunHierarchy,
 	AsAddressObjectParams,
 };
 
@@ -57,13 +56,13 @@ class XMLReaderFactory
 
 	public static function execAdminHierarchi() : ConcreteReader
 	{
-		return self::prepare(new AsAdminHierarchi(), FILES['ADMIN_HIERARCHI']);
+		return self::prepare(new AsAdminHierarchy(), FILES['ADMIN_HIERARCHI']);
 
 	}
 
 	public static function execMunHierachi() : ConcreteReader
 	{
-		return self::prepare(new AsMunHierarchi(), FILES['MUN_HIERARCHI']);
+		return self::prepare(new AsMunHierarchy(), FILES['MUN_HIERARCHI']);
 
 	}
 

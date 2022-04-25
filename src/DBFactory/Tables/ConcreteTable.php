@@ -20,10 +20,11 @@ abstract class ConcreteTable extends AbstractTable implements CreateTable
 {
 	use Queries, MetaTable;
 
-	/**
-	 * modified basic construct for some log info
-	 * @param \PDO $connection connected PDO object
-	 */
+    /**
+     * modified basic construct for some log info
+     * @param \PDO $connection connected PDO object
+     * @throws \Exception
+     */
 	function __construct(\PDO $connection) {
 		try {
 			if (!empty($this->getFieldsToCreate())) { 

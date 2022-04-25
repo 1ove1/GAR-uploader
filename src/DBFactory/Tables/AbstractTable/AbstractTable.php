@@ -13,13 +13,13 @@ abstract class AbstractTable
 
 	/**
 	 *  name of table
-	 * @var null
-	 */
+	 * @var string|null
+     */
 	protected ?string $name = null;
 
 	/**
 	 *  curr lazy insert step
-	 * @var 0
+	 * @var int 0
 	 */
 	protected int 		$currLzyInsStep = 0;
 
@@ -32,32 +32,32 @@ abstract class AbstractTable
 
 	/**
 	 *  contains temp lazyInsertData
-	 * @var []
+	 * @var array []
 	 */
 	protected array 	$lzyInsSaver = [];
 
 	/**
 	 *  table fields
-	 * @var null
-	 */
+	 * @var array|null
+     */
 	protected ?array $fields = null;
 
 	/**
 	 *  full information about table fields
-	 * @var null
-	 */
+	 * @var array|null
+     */
 	protected ?array $metaInfo = null;
 
 	/**
 	 *  PDO object 
-	 * @var null
-	 */
+	 * @var \PDO|null
+     */
 	protected ?\PDO $PDO 	= null;
 
 	/**
 	 * PDO statement for insert
-	 * @var null
-	 */
+	 * @var \PDOStatement|null
+     */
 	protected ?\PDOStatement $PDOInsert = null;
 
 
@@ -93,38 +93,39 @@ abstract class AbstractTable
 	*/
 	protected abstract function getTableName(string $className) : string;
 
-	/**
-	 *  getting meta info from table meta (only for mysql)
-	 * @param  string $tableName name of table (probably $this->name)
-	 * @return string  			 table meta info and table fields
-	 */
+    /**
+     *  getting meta info from table meta (only for mysql)
+     * @param string $tableName name of table (probably $this->name)
+     * @return array table meta info and table fields
+     */
 	protected abstract function getMetaInfo(string $tableName) : array;
 
-	/**
-	 *  prepare PDO Statements for curr table using properties
-	 * @var $maxLzyInsStep
-	 * @return void 
-	 */
+    /**
+     *  prepare PDO Statements for curr table using properties
+     *
+     * @param int $lzyInsStep
+     * @return void
+     */
 	protected abstract function prepareInsertPDOStatement(int $lzyInsStep): void;
 
 	/**
 	 * DATABASE QUERIES
 	 */
-	
-	/**
-	 *  Select method (simple sql query)
-	 * @param  string      $fields    fields that needs to select
-	 * @param  string|null $condition WHERE condition
-	 * @param  array|null  $element   WHERE element for condition
-	 * @return array 				  query result
-	 */
+
+    /**
+     *  Select method (simple sql query)
+     * @param array|string $fields fields that need to select
+     * @param string|null $condition WHERE condition
+     * @param array|null $element WHERE element for condition
+     * @return array                  query result
+     */
 	public abstract function select(array|string $fields = '*', ?string $condition = null, ?array $element = null) : array;
 
-	/**
-	 *  insert query
-	 * @param  array  $fields_values array with field => value struct 
-	 * @return voids
-	 */
+    /**
+     *  insert query
+     * @param array $fields_values array with field => value struct
+     * @return void
+     */
 	public abstract function insert(array $fields_values) : void;
 
 	/**

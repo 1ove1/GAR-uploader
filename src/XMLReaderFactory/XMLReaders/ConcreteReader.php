@@ -73,7 +73,7 @@ abstract class ConcreteReader extends AbstractXMLReader
 
 	/**
 	 *  method from ShedulerObject
-	 *  creating ling to the chiled object by linkToAnother
+	 *  creating long to the children object by linkToAnother
 	 * @param  string $fileName name of concrete file
 	 * @return void
 	 */
@@ -97,7 +97,7 @@ abstract class ConcreteReader extends AbstractXMLReader
 			return;
 		}
 
-		// extract if it none
+		// extract if its none
 		if (is_null($this->pathToXml) || file_exists($this->pathToXml)) {
 			try{
 				Log::write(Msg::LOG_XML_EXTRACT->value, $this->fileName);
