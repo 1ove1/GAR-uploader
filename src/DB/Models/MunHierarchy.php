@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\Models;
+namespace GAR\Uploader\DB\Models;
 
 use GAR\Uploader\Models\ConcreteTable;
 
@@ -13,7 +13,7 @@ use GAR\Uploader\Models\ConcreteTable;
  */
 class MunHierarchy extends ConcreteTable
 {
-	public function getFieldsToCreate() : array 
+	public function setFieldsToCreate() : array
 	{
 		return [
 			'id_mun' => [

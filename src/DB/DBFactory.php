@@ -1,24 +1,21 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\DBFactory;
+namespace GAR\Uploader\DB;
 
-use GAR\Uploader\DBFactory\DBFacade;
-use GAR\Uploader\Models\{
-		ConcreteTable,
-	  AddrObj,
-	 	AddrObjParams,
-    Houses,
-		AdminHierarchy,
-		MunHierarchy,
-};
+use GAR\Uploader\DB\Models\AddrObj;
+use GAR\Uploader\DB\Models\AddrObjParams;
+use GAR\Uploader\DB\Models\AdminHierarchy;
+use GAR\Uploader\DB\Models\Houses;
+use GAR\Uploader\DB\Models\MunHierarchy;
+use GAR\Uploader\Models\{ConcreteTable,};
 
 /**
- * BDFACTORY CLASS
+ * BD FACTORY CLASS
  *
  * FULL-STATIC FABRIC
  * RETURN COMPLETED MODELS
  */
-final class DBFactory 
+class DBFactory
 {
 	
 	public static function getAddressObjectTable() : ConcreteTable

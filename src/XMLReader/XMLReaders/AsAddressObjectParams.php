@@ -18,6 +18,17 @@ class AsAddressObjectParams extends ConcreteReader
 	public function execDoWork(ConcreteTable $model, array $value) : void
 	{
     if (in_array($value['typeid'], ['6', '7', '11'])) {
+
+      if ($value['typeid'] === '6') {
+        $type = 'OKATO';
+      } else if ($value['typeid'] === '7') {
+        $type = 'OKTMO';
+      } else {
+        $type = 'KLADR';
+      }
+
+      $value['typeid'] = $type;
+
       $model->insert($value);
     }
 	}

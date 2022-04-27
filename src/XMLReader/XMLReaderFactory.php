@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\XMLReaderFactory;
+namespace GAR\Uploader\XMLReader;
 
 use GAR\Uploader\Readers\{
 	ConcreteReader,

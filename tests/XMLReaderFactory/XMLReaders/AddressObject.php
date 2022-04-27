@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 use GAR\Uploader\Readers\AddressObject;
 
-use GAR\Uploader\DBFactory\DBFactory;
+use GAR\Uploader\DB\DBFactory;
 
 class AddressObjectTest extends TestCase
 {

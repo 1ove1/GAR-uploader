@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\Models;
+namespace GAR\Uploader\DB\Models;
 
 use GAR\Uploader\Models\ConcreteTable;
 
@@ -11,22 +11,19 @@ use GAR\Uploader\Models\ConcreteTable;
  * EXTENDS CONCRETE TABLE AND USING FOR COMMUNICATE
  * WITH TABLE 'address_info'
  */
-class AddrObjParams extends ConcreteTable 
+class AdminHierarchy extends ConcreteTable
 {
-	public function getFieldsToCreate() : array 
+	public function setFieldsToCreate() : array
 	{
 		return [
-			'id_addr_params' => [
+			'id_admin' => [
 				'CHAR(50)',
 			],
-			'objectid_addr_params' => [
+			'objectid_admin' => [
 				'CHAR(50)',
 			],
-			'TYPE' => [
-				'INTEGER',
-			],
-			'VALUE' => [
-				'CHAR(100)',
+			'parentobjid_admin' => [
+				'CHAR(50)',
 			],
 		];
 	}

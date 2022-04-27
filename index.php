@@ -2,8 +2,8 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-use GAR\Uploader\XMLReaderFactory\XMLReaderFactory;
-use GAR\Uploader\DBFactory\DBFactory;
+use GAR\Uploader\XMLReader\XMLReaderFactory;
+use GAR\Uploader\DB\DBFactory;
 
 define('ITERS', 1);
 

@@ -71,10 +71,13 @@ class Log
 	private static function launch() : void
 	{
 		if (!file_exists(LOG_PATH)) {
-			mkdir(LOG_PATH);
-		}
+      mkdir(LOG_PATH);
+    }
 
-		define('CURR_LOG_FILE', sprintf("%s/log_%s.txt", 
+    shell_exec('rm ' . LOG_PATH . '/log_*.txt');
+
+
+    define('CURR_LOG_FILE', sprintf("%s/log_%s.txt",
 			LOG_PATH, 
 			str_replace(' ', '_', self::currTime())
 		));
