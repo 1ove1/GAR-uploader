@@ -34,7 +34,7 @@ class Log
 	}
 
 	/**
-	 * warinig method (making caption if expetion was throw)
+	 * warning method (making caption if expetion was throw)
 	 * @param  string $message message to log
 	 * @return void
 	 */
@@ -74,7 +74,7 @@ class Log
       mkdir(LOG_PATH);
     }
 
-    shell_exec('rm ' . LOG_PATH . '/log_*.txt');
+//    shell_exec('rm ' . LOG_PATH . '/log_*.txt');
 
 
     define('CURR_LOG_FILE', sprintf("%s/log_%s.txt",

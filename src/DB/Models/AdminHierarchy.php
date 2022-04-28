@@ -3,6 +3,7 @@
 namespace GAR\Uploader\DB\Models;
 
 use GAR\Uploader\Models\ConcreteTable;
+use JetBrains\PhpStorm\ArrayShape;
 
 
 /**
@@ -13,7 +14,7 @@ use GAR\Uploader\Models\ConcreteTable;
  */
 class AdminHierarchy extends ConcreteTable
 {
-	public function setFieldsToCreate() : array
+	#[ArrayShape(['id_admin' => "string[]", 'objectid_admin' => "string[]", 'parentobjid_admin' => "string[]"])] public function setFieldsToCreate() : array
 	{
 		return [
 			'id_admin' => [

@@ -2,7 +2,8 @@
 
 namespace GAR\Uploader\Models;
 
-use GAR\Uploader\{DB\PDOAdapter\PDOElem, DB\Table\SQL\SQLTable, Log, Msg, Env};
+use GAR\Uploader\DB\Table\AbstractTable\SQLEnableTable;
+use GAR\Uploader\{DB\DBFacade, DB\PDOAdapter\DBAdapter, Env, Log, Msg};
 
 /**
  * CONCRETE TABLE CLASS
@@ -10,16 +11,22 @@ use GAR\Uploader\{DB\PDOAdapter\PDOElem, DB\Table\SQL\SQLTable, Log, Msg, Env};
  * IMPLEMENTS ABSTRACTNESS METHODS
  * (OR MODIFIED THEM)
  */
-abstract class ConcreteTable extends SQLTable
+abstract class ConcreteTable extends SQLEnableTable
 {
 
-  public function __construct(PDOElem $db)
+  public function __construct(DBAdapter $db)
   {
-    parent::__construct($db, get_class($this), intval(Env::sqlInsertBuffer->value));
+    parent::__construct(
+      $db,
+      DBFacade::genTableNameByClassName(get_class($this)),
+      intval(Env::sqlInsertBuffer->value)
+    );
     Log::write(
       Msg::LOG_DB_INIT->value,
       $this->getName(),
       Msg::LOG_COMPLETE->value
     );
   }
+
+
 }

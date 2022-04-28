@@ -1,10 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace GAR\Uploader\DB\Table\SQL;
+namespace GAR\Tests\DBTest;
 
-use GAR\Uploader\DB\DBFacade;
 use GAR\Tests\TestEnv;
-use GAR\Uploader\DB\PDOAdapter\PDOElem;
+use GAR\Uploader\DB\DBFacade;
+use GAR\Uploader\DB\PDOAdapter\PDOObject;
+use GAR\Uploader\DB\Table\AbstractTable\MetaEnableTable;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -12,21 +13,27 @@ use PHPUnit\Framework\TestCase;
  */
 class MetaTableTest extends TestCase
 {
-  private PDOElem $connection;
-  private MetaTable $metaTable;
+  private const TEST_TABLE = 'test';
+  private PDOObject $connection;
+  private MetaEnableTable $metaTable;
 
   protected function setUp() : void
   {
     parent::setUp();
     $this->connection = DBFacade::getInstance(TestEnv::class);
-    $this->connection->query('BEGIN');
-    $this->metaTable = new MetaTable($this->connection);
+//    $this->connection->query('BEGIN');
+    $this->metaTable = new MetaEnableTable($this->connection, self::TEST_TABLE);
   }
 
   protected function tearDown() : void
   {
     parent::tearDown();
-    $this->connection->query('ROLLBACK');
+//    $this->connection->query('ROLLBACK');
+  }
+
+  public function testName()
+  {
+
   }
 
 

@@ -3,6 +3,7 @@
 namespace GAR\Uploader\DB\Models;
 
 use GAR\Uploader\Models\ConcreteTable;
+use JetBrains\PhpStorm\ArrayShape;
 
 
 /**
@@ -13,7 +14,7 @@ use GAR\Uploader\Models\ConcreteTable;
  */
 class Houses extends ConcreteTable 
 {
-	public function setFieldsToCreate() : array
+	#[ArrayShape(['id_houses' => "string[]", 'objectid_houses' => "string[]", 'objectguid_houses' => "string[]", 'housenum_houses' => "string[]", 'housetype_houses' => "string[]"])] public function setFieldsToCreate() : array
 	{
 		return [
 			'id_houses' => [

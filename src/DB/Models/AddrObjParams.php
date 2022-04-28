@@ -3,6 +3,7 @@
 namespace GAR\Uploader\DB\Models;
 
 use GAR\Uploader\Models\ConcreteTable;
+use JetBrains\PhpStorm\ArrayShape;
 
 
 /**
@@ -13,7 +14,7 @@ use GAR\Uploader\Models\ConcreteTable;
  */
 class AddrObjParams extends ConcreteTable 
 {
-	public function setFieldsToCreate() : array
+	#[ArrayShape(['id_addr_params' => "string[]", 'objectid_addr_params' => "string[]", 'TYPE' => "string[]", 'VALUE' => "string[]"])] public function setFieldsToCreate() : array
 	{
 		return [
 			'id_addr_params' => [

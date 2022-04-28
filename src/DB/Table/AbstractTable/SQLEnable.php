@@ -1,8 +1,8 @@
 <?php
 
-namespace GAR\Uploader\DB\Table\SQL;
+namespace GAR\Uploader\DB\Table\AbstractTable;
 
-interface SQL
+interface SQLEnable
 {
   /**
    * Make SELECT query

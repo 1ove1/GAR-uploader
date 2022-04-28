@@ -6,129 +6,155 @@ use RuntimeException;
 use PDOStatement;
 
 
-class PDOTemplate
+class PDOTemplate implements InsertTemplate
 {
   /**
    * @var PDOStatement|null - prepared statement for PDO exec
    */
   private ?PDOStatement $state = null;
-
-  /**
-   * @var PDOElem - curr pdo elem
-   */
-  private PDOElem $pdoElem;
-
   /**
    * @var string - name of table
    */
-  private string $tableName;
-
+  private readonly string $tableName;
   /**
    * @var int - stages count
    */
-  private int $stagesCount;
-
+  private readonly int $stagesCount;
+  /**
+   * @var int - current stages in template
+   */
+  private int $currStage = 0;
+  /**
+   * @var array - buffer of stage values
+   */
+  private array $stageBuffer = [];
   /**
    * @var array - template fields
    */
-  private array $fields;
+  private readonly array $fields;
+  /**
+   * @var string - template code
+   */
+  private string $template;
 
   /**
-   * @param PDOElem $pdoElem
+   * @param string $tableName
+   * @param array $fields
+   * @param int $stagesCount
    */
-  public function __construct(PDOElem $pdoElem)
+  public function __construct(string $tableName, array $fields, int $stagesCount = 1)
   {
-    $this->pdoElem = $pdoElem;
+    $this->isValid($tableName, $fields, $stagesCount);
+
+    $this->tableName = $tableName;
+    $this->fields = $fields;
+    $this->stagesCount = $stagesCount;
   }
 
-
   /**
-   * Prepare statement to execute
+   * Create exception if input is incorrect
    * @param string $tableName - name of table
-   * @param array $fields - fields that need to insert
-   * @param int $stages - count of insert stages
-   * @return $this
+   * @param array $fields - fields to create
+   * @param int $stagesCount - stage count
+   * @return void
    */
-  public function prepareINS(string $tableName, array $fields, int $stages = 1) : self
+  public function isValid(string $tableName, array $fields, int $stagesCount) : void
   {
-    $formattedVars = [];
-
-    if ($stages < 1) {
+    if ($stagesCount < 1) {
+      throw new RuntimeException(
+        'PDOTemplate error: stages buffer needs to be more than 0'
+      );
+    } else if (empty($fields)) {
+      throw new RuntimeException(
+        'PDOTemplate error: stages buffer needs to be more than 0'
+      );
+    } else if (empty($tableName)) {
       throw new RuntimeException(
         'PDOTemplate error: stages buffer needs to be more than 0'
       );
     }
+  }
 
-    for ($stage = $stages; $stage > 0; $stage--) {
-      $temp = [];
-      foreach ($fields as $ignored) {
-
-        $temp[] = '? ';
-      }
-      $formattedVars[] = '(' . implode(', ', $temp) . ')';
-    }
-
-    $formattedQuery = sprintf(
+  /**
+   * Prepare statement to execute
+   * @param int $stageCount - count of stages vars
+   * @return void - string PDO template
+   */
+  public function genTemplate(DBAdapter $db, int $stageCount) : void
+  {
+    $this->template = sprintf(
       'INSERT INTO %s (%s) VALUES %s',
-      $tableName, implode(', ', $fields), implode(', ', $formattedVars),
+      $this->getTableName(),
+      implode(', ', $this->getFields()),
+      $this->genVars($stageCount),
     );
 
-    $this->state = $this->getPDOElem()->getInstance()->prepare($formattedQuery);
-    $this->setTableName($tableName);
-    $this->setStagesCount($stages);
-    $this->setFields($fields);
-
-    return $this;
+    $this->setState($db, $this->template);
   }
 
   /**
-   * Execute template
-   * @param array $values - values for execute
-   * @return $this
+   * Return vars in string view (?, ?, ..., ?)
+   * @return string - vars in string view
    */
-  public function exec(array $values) : self
+  public function genVars(int $stageCount) : string
   {
-    $newStageCount = count($values) / count($this->getFields());
+    $vars = [];
 
-    if ($this->execValid($newStageCount)) {
-      if ($newStageCount < $this->getStagesCount()) {
-        $oldStageCount = $this->getStagesCount();
-
-        $this->prepareINS($this->getTableName(), $this->getFields(), $newStageCount);
-        $this->getState()->execute($values);
-        $this->prepareINS($this->getTableName(), $this->getFields(), $oldStageCount);
-
-      } else {
-        $this->getState()->execute($values);
+    for ($stage = $stageCount; $stage > 0; $stage--) {
+      $temp = [];
+      foreach ($this->getFields() as $ignored) {
+        $temp[] = '? ';
       }
+      $vars[] = '(' . implode(', ', $temp) . ')';
     }
 
-    return $this;
+    return implode(', ', $vars);
   }
 
   /**
-   * Validation for exec
-   * @param $newStageCount - stage count in new input
-   * @return bool
+   * Execute template with bind values (use lazy method)
+   * @param DBAdapter $db - database connection
+   * @param array $values -
+   * @return PDOStatement
    */
-  private function execValid($newStageCount) : bool
+  function exec(DBAdapter $db, array $values) : PDOStatement
   {
     if (is_null($this->getState())) {
-      throw new RuntimeException(
-        'PDOTemplate error: undefined state, do prepare first'
-      );
+      $this->setState($db, $this->getStagesCount());
     }
-    if ($newStageCount > $this->getStagesCount()) {
-      throw new RuntimeException(
-        'PDOTemplate error: values count are too big'
-      );
-    }
+    if (count($this->getFields()) === count($values)) {
+      $this->setStageBuffer($values);
+      $this->incCurrStage();
 
-    return true;
+      if ($this->getCurrStage() === $this->getStagesCount()) {
+        $this->save($db);
+      }
+    }
+    return $this->getState();
   }
 
   /**
-   * Getter for PDOStatement
+   * @return PDOTemplate - save changes (require for lazy insert)
+   */
+  function save(DBAdapter $db): PDOTemplate
+  {
+    if (!empty($this->getStageBuffer())) {
+      if ($this->getCurrStage() < $this->getStagesCount()) {
+        $this->genTemplate($db, $this->getCurrStage());
+        $this->getState()?->execute($this->getStageBuffer());
+        $this->genTemplate($db, $this->getStagesCount());
+      } else {
+          $this->getState()?->execute($this->getStageBuffer());
+      }
+
+      $this->setStageBuffer(null);
+      $this->incCurrStage(null);
+    }
+    return $this;
+  }
+
+
+  /**
    * @return PDOStatement|null
    */
   public function getState(): ?PDOStatement
@@ -137,12 +163,13 @@ class PDOTemplate
   }
 
   /**
-   * Getter for PDOElem
-   * @return PDOElem
+   * @param DBAdapter $db
+   * @param string $template
+   * @return void
    */
-  public function getPDOElem() : PDOElem
+  private function setState(DBAdapter $db, string $template): void
   {
-    return $this->pdoElem;
+    $this->state = $db->prepare($template);
   }
 
   /**
@@ -154,27 +181,11 @@ class PDOTemplate
   }
 
   /**
-   * @param string $tableName
-   */
-  private function setTableName(string $tableName): void
-  {
-    $this->tableName = $tableName;
-  }
-
-  /**
    * @return int
    */
   public function getStagesCount(): int
   {
     return $this->stagesCount;
-  }
-
-  /**
-   * @param int $stagesCount
-   */
-  private function setStagesCount(int $stagesCount): void
-  {
-    $this->stagesCount = $stagesCount;
   }
 
   /**
@@ -186,12 +197,53 @@ class PDOTemplate
   }
 
   /**
-   * @param array $fields
+   * @return string
    */
-  public function setFields(array $fields): void
+  public function getTemplate(): string
   {
-    $this->fields = $fields;
+    return $this->template;
   }
 
+  /**
+   * @return int
+   */
+  public function getCurrStage(): int
+  {
+    return $this->currStage;
+  }
+
+  /**
+   * @param int|null $value
+   */
+  public function incCurrStage(?int $value = 1): void
+  {
+    if (is_null($value)) {
+      $this->currStage = 0;
+    } else {
+      $this->currStage = $this->currStage + $value;
+    }
+  }
+
+  /**
+   * @return array
+   */
+  public function getStageBuffer(): array
+  {
+    return $this->stageBuffer;
+  }
+
+  /**
+   * @param array|null $stageBuffer
+   */
+  public function setStageBuffer(?array $stageBuffer): void
+  {
+    if (is_null($stageBuffer)) {
+      $this->stageBuffer = [];
+    } else {
+      $this->stageBuffer = array_merge(
+        $this->stageBuffer, array_values($stageBuffer)
+      );
+    }
+  }
 
 }

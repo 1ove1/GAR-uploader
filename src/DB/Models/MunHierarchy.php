@@ -3,6 +3,7 @@
 namespace GAR\Uploader\DB\Models;
 
 use GAR\Uploader\Models\ConcreteTable;
+use JetBrains\PhpStorm\ArrayShape;
 
 
 /**
@@ -13,7 +14,7 @@ use GAR\Uploader\Models\ConcreteTable;
  */
 class MunHierarchy extends ConcreteTable
 {
-	public function setFieldsToCreate() : array
+	#[ArrayShape(['id_mun' => "string[]", 'objectid_mun' => "string[]", 'parentobjid_mun' => "string[]", 'oktmo_mun' => "string[]"])] public function setFieldsToCreate() : array
 	{
 		return [
 			'id_mun' => [
