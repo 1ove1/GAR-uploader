@@ -54,7 +54,6 @@ class SQLGenerator implements SQLFactory
   static function genCreateTableQuery(string $tableName,
                                       array $fieldsWithParams): SQLQuery
   {
-    print_r(self::makeCreateTableQuery($tableName, $fieldsWithParams));
     return (new SQLObject())
       ->setType(SQLEnum::META)
       ->setRawSql(self::makeCreateTableQuery($tableName, $fieldsWithParams))
