@@ -3,11 +3,11 @@
 namespace GAR\Uploader\DB\Table\AbstractTable;
 
 use GAR\Uploader\DB\PDOAdapter\DBAdapter;
+use GAR\Uploader\DB\PDOAdapter\PDOObject;
 use GAR\Uploader\DB\Table\AbstractTable\SQLFactory\SQLGenerator;
 use JetBrains\PhpStorm\ArrayShape;
-use PDO;
 
-class MetaEnableTable implements MetaEnable
+class MetaTable
 {
   /**
    * @var DBAdapter - PDO object
@@ -27,15 +27,19 @@ class MetaEnableTable implements MetaEnable
   private readonly array $metaInfo;
 
   /**
-   * @param DBAdapter $db
-   * @param string $tableName
+   * Create meta table object
+   * @param DBAdapter $db - database adapter connection
+   * @param string $tableName - name of table
+   * @param ?array $createOption - option for create table
    */
-  public function __construct(DBAdapter $db, string $tableName)
+  public function __construct(DBAdapter $db,
+                              string $tableName,
+                              ?array $createOption)
   {
     $this->db = $db;
     $this->name = $tableName;
-    if ($this->setFieldsToCreate() !== null) {
-      $this->createTable($tableName);
+    if ($createOption !== null) {
+      $this->createTable($tableName, $createOption);
     }
 
     [$this->metaInfo, $this->fields] = $this->getMetaInfoAndFields($tableName);
@@ -51,25 +55,26 @@ class MetaEnableTable implements MetaEnable
   {
     $query = SQLGenerator::genMetaQuery($tableName);
 
-    $metaInfo = $this->getDb()->rawQuery($query)->fetchAll(PDO::FETCH_ASSOC);
-    $tableFields = $this->getDb()->rawQuery($query)->fetchAll(PDO::FETCH_COLUMN);
+    $metaInfo = $this->getDb()->rawQuery($query)->fetchAll(PDOObject::F_ALL);
+    $tableFields = $this->getDb()->rawQuery($query)->fetchAll(PDOObject::F_COL);
 
     return [$metaInfo, $tableFields];
   }
 
   /**
    * Create table using curr connected, name of table and fields
-   * @param string $tableName
+   * @param string $tableName - name of table
+   * @param array $createOption - fields and their params
    * @return void
    */
-  private function createTable(string $tableName) : void
+  private function createTable(string $tableName, array $createOption) : void
   {
     if (!$this->tableExistsAndDropCheck($tableName)) {
       return;
     }
 
     $this->getDb()->rawQuery(SQLGenerator::genCreateTableQuery(
-      $this->getName(), $this->setFieldsToCreate()
+      $this->getName(), $createOption
     ));
   }
 
@@ -82,8 +87,8 @@ class MetaEnableTable implements MetaEnable
   {
     $connection = $this->getDb();
     $tableList = $connection->rawQuery(SQLGenerator::genShowTableQuery())
-                            ->fetchAll(PDO::FETCH_COLUMN);
-    $userInput = '';
+                            ->fetchAll(PDOObject::F_COL);
+    $userInput = 'Y';
 
     if (in_array($tableName, $tableList)) {
       do {
@@ -92,7 +97,7 @@ class MetaEnableTable implements MetaEnable
         );
       } while (!preg_match('/[YyNnДдНн]+/', $userInput));
     }
-    return !preg_match("/[NnНн]/", $userInput);
+    return preg_match("/[YyДд]/", $userInput);
   }
 
   /**
@@ -120,15 +125,6 @@ class MetaEnableTable implements MetaEnable
   function getFields(): ?array
   {
     return $this->fields;
-  }
-
-  /**
-   * Set the custom fields that need to create (null if not)
-   * @return array|null - fields and their params
-   */
-  function setFieldsToCreate(): ?array
-  {
-    return null;
   }
 
   /**

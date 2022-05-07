@@ -17,6 +17,10 @@ class AsMunHierarchy extends ConcreteReader
 
 	public function execDoWork(ConcreteTable $model, array $value) : void
 	{
+    $value['id'] = intval($value['id']);
+    $value['objectid'] = intval($value['objectid']);
+    $value['parentobjid'] = intval($value['parentobjid']);
+    $value['oktmo'] = intval($value['oktmo']);
 		$model->insert($value);
 	}
 }

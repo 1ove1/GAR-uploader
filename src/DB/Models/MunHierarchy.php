@@ -14,20 +14,24 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 class MunHierarchy extends ConcreteTable
 {
-	#[ArrayShape(['id_mun' => "string[]", 'objectid_mun' => "string[]", 'parentobjid_mun' => "string[]", 'oktmo_mun' => "string[]"])] public function setFieldsToCreate() : array
+	#[ArrayShape(['id_mun' => "string[]",
+    'objectid_mun' => "string[]",
+    'parentobjid_mun' => "string[]",
+    'oktmo_mun' => "string[]"])]
+  public function fieldsToCreate() : ?array
 	{
 		return [
 			'id_mun' => [
-				'CHAR(50)',
+        'BIGINT UNSIGNED NOT NULL',
 			],
 			'objectid_mun' => [
-				'CHAR(50)',
+        'BIGINT UNSIGNED NOT NULL',
 			],
 			'parentobjid_mun' => [
-				'CHAR(50)',
+        'BIGINT UNSIGNED NOT NULL',
 			],
       'oktmo_mun' => [
-				'CHAR(50)',
+        'BIGINT UNSIGNED NOT NULL',
 			],
 		];
 	}

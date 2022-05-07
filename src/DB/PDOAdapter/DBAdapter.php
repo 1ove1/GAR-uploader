@@ -6,7 +6,6 @@ use GAR\Uploader\DB\Table\AbstractTable\SQLFactory\SQLQuery;
 
 interface DBAdapter
 {
-  function connect(string $pass) : void;
   function rawQuery(SQLQuery $query) : self;
   function fetchAll(int $flag) : mixed;
   function prepare(string $template) : mixed;

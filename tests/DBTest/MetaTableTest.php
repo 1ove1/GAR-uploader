@@ -5,7 +5,7 @@ namespace GAR\Tests\DBTest;
 use GAR\Tests\TestEnv;
 use GAR\Uploader\DB\DBFacade;
 use GAR\Uploader\DB\PDOAdapter\PDOObject;
-use GAR\Uploader\DB\Table\AbstractTable\MetaEnableTable;
+use GAR\Uploader\DB\Table\AbstractTable\MetaTable;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,14 +15,14 @@ class MetaTableTest extends TestCase
 {
   private const TEST_TABLE = 'test';
   private PDOObject $connection;
-  private MetaEnableTable $metaTable;
+  private MetaTable $metaTable;
 
   protected function setUp() : void
   {
     parent::setUp();
     $this->connection = DBFacade::getInstance(TestEnv::class);
 //    $this->connection->query('BEGIN');
-    $this->metaTable = new MetaEnableTable($this->connection, self::TEST_TABLE);
+    $this->metaTable = new MetaTable($this->connection, self::TEST_TABLE);
   }
 
   protected function tearDown() : void

@@ -14,23 +14,28 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 class Houses extends ConcreteTable 
 {
-	#[ArrayShape(['id_houses' => "string[]", 'objectid_houses' => "string[]", 'objectguid_houses' => "string[]", 'housenum_houses' => "string[]", 'housetype_houses' => "string[]"])] public function setFieldsToCreate() : array
+	#[ArrayShape(['id_houses' => "string[]",
+    'objectid_houses' => "string[]",
+    'objectguid_houses' => "string[]",
+    'housenum_houses' => "string[]",
+    'housetype_houses' => "string[]"])]
+  public function fieldsToCreate() : ?array
 	{
 		return [
 			'id_houses' => [
-				'CHAR(50)',
+        'BIGINT UNSIGNED NOT NULL',
 			],
 			'objectid_houses' => [
-				'CHAR(50)',
+        'BIGINT UNSIGNED NOT NULL',
 			],
 			'objectguid_houses' => [
-				'CHAR(50)',
+        'BIGINT UNSIGNED NOT NULL',
 			],
 			'housenum_houses' => [
-				'CHAR(100)',
+				'CHAR(100) NOT NULL',
 			],
 			'housetype_houses' => [
-				'CHAR(50)',
+				'CHAR(50) NOT NULL',
 			],
 		];
 	}

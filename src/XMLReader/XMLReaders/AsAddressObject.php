@@ -18,7 +18,11 @@ class AsAddressObject extends ConcreteReader
 	public function execDoWork(ConcreteTable $model, array $value) : void
 	{
 		if ($value['isactive'] === "1" && $value['isactual'] === "1") {
-			$model->insert(array_diff_key($value, array_flip(['isactual', 'isactive'])));
+      $value = array_diff_key($value, array_flip(['isactual', 'isactive']));
+      $value['id'] = intval($value['id']);
+      $value['objectid'] = intval($value['objectid']);
+      $value['objectguid'] = intval($value['objectguid']);
+			$model->insert($value);
 		}
 	}
 }

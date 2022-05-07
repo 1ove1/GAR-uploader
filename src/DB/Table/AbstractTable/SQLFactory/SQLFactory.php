@@ -12,10 +12,4 @@ interface SQLFactory
   static function genCreateTableQuery(string $tableName,
                                       array $fieldsWithParams) : SQLQuery;
   static function genShowTableQuery() : SQLQuery;
-//  static function makeInsert(SQLObject $template) : SQLQuery;
-//  static function makeInsertPDOTemplate(string $tableName,
-//                                        string $fields,
-//                                        int $stageCount) : PDOTemplate;
-
-
 }

@@ -14,17 +14,20 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 class AdminHierarchy extends ConcreteTable
 {
-	#[ArrayShape(['id_admin' => "string[]", 'objectid_admin' => "string[]", 'parentobjid_admin' => "string[]"])] public function setFieldsToCreate() : array
+	#[ArrayShape(['id_admin' => "string[]",
+    'objectid_admin' => "string[]",
+    'parentobjid_admin' => "string[]"])]
+  public function fieldsToCreate() : ?array
 	{
 		return [
 			'id_admin' => [
-				'CHAR(50)',
+        'BIGINT UNSIGNED NOT NULL',
 			],
 			'objectid_admin' => [
-				'CHAR(50)',
+        'BIGINT UNSIGNED NOT NULL',
 			],
 			'parentobjid_admin' => [
-				'CHAR(50)',
+        'BIGINT UNSIGNED NOT NULL',
 			],
 		];
 	}

@@ -21,6 +21,9 @@ class PDOObject implements DBAdapter
    */
   private ?PDOStatement $lastQuery = null;
 
+  public const F_ALL = PDO::FETCH_ASSOC;
+  public const F_COL = PDO::FETCH_COLUMN;
+
 
   /**
    * @param string $dbType - type of curr db
@@ -86,7 +89,7 @@ class PDOObject implements DBAdapter
    * @param int $flag - standard PDO flag
    * @return array|bool|null - fetch result
    */
-  public function fetchAll(int $flag) : array|bool|null
+  public function fetchAll(int $flag = PDO::FETCH_COLUMN) : array|bool|null
   {
     return $this->getLastQuery()?->fetchAll($flag);
   }

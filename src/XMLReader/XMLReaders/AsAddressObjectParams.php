@@ -27,7 +27,12 @@ class AsAddressObjectParams extends ConcreteReader
         $type = 'KLADR';
       }
 
+
       $value['typeid'] = $type;
+
+      $value['id'] = intval($value['id']);
+      $value['objectid'] = intval($value['objectid']);
+      $value['value'] = intval($value['value']);
 
       $model->insert($value);
     }

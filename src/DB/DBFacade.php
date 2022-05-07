@@ -2,7 +2,13 @@
 
 namespace GAR\Uploader\DB;
 
-use GAR\Uploader\{DB\PDOAdapter\DBAdapter, DB\PDOAdapter\PDOObject, Env, Log, Msg};
+use GAR\Uploader\{DB\PDOAdapter\DBAdapter,
+  DB\PDOAdapter\InsertTemplate,
+  DB\PDOAdapter\PDOObject,
+  DB\PDOAdapter\PDOTemplate,
+  Env,
+  Log,
+  Msg};
 use InvalidArgumentException;
 use PDOException;
 
@@ -62,6 +68,13 @@ class DBFacade
 
     return $PDO;
 	}
+
+  public static function getTemplate(string $tableName,
+                                     array $fields,
+                                     int $maxCountStages): InsertTemplate
+  {
+    return new PDOTemplate($tableName, $fields, $maxCountStages);
+  }
 
   /**
    * Convert classname to normal table name

@@ -17,6 +17,9 @@ class AsAdminHierarchy extends ConcreteReader
 
 	public function execDoWork(ConcreteTable $model, array $value) : void
 	{
+    $value['id'] = intval($value['id']);
+    $value['objectid'] = intval($value['objectid']);
+    $value['parentobjid'] = intval($value['parentobjid']);
 		$model->insert($value);
 	}
 }

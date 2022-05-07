@@ -14,23 +14,28 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 class AddrObj extends ConcreteTable 
 {
-  #[ArrayShape(['id_addr' => "string[]", 'objectid_addr' => "string[]", 'objectguid_addr' => "string[]", 'name_addr' => "string[]", 'typename_addr' => "string[]"])] public function setFieldsToCreate() : array
+  #[ArrayShape(['id_addr' => "string[]",
+    'objectid_addr' => "string[]",
+    'objectguid_addr' => "string[]",
+    'name_addr' => "string[]",
+    'typename_addr' => "string[]"])]
+  public function fieldsToCreate() : ?array
 	{
 		return [
 			'id_addr' => [
-				'CHAR(50)',
+				'BIGINT UNSIGNED NOT NULL',
 			],
 			'objectid_addr' => [
-				'CHAR(50)',
+				'BIGINT UNSIGNED NOT NULL',
 			],
 			'objectguid_addr' => [
-				'CHAR(50)',
+				'BIGINT UNSIGNED NOT NULL',
 			],
 			'name_addr' => [
-				'CHAR(100)',
+				'VARCHAR(100) NOT NULL',
 			],
 			'typename_addr' => [
-				'CHAR(50)',
+				'VARCHAR(100) NOT NULL',
 			],
 		];
 	}
