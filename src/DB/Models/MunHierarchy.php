@@ -2,7 +2,8 @@
 
 namespace GAR\Uploader\DB\Models;
 
-use GAR\Uploader\Models\ConcreteTable;
+use GAR\Uploader\DB\Table\AbstractTable\SQL\QueryModel;
+use GAR\Uploader\DB\Table\ConcreteTable;
 use JetBrains\PhpStorm\ArrayShape;
 
 
@@ -12,7 +13,7 @@ use JetBrains\PhpStorm\ArrayShape;
  * EXTENDS CONCRETE TABLE AND USING FOR COMMUNICATE
  * WITH TABLE 'address_info'
  */
-class MunHierarchy extends ConcreteTable
+class MunHierarchy extends ConcreteTable implements QueryModel
 {
 	#[ArrayShape(['id_mun' => "string[]",
     'objectid_mun' => "string[]",

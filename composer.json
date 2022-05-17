@@ -4,8 +4,6 @@
     "autoload": {
         "psr-4": {
             "GAR\\Uploader\\": "src/",
-            "GAR\\Uploader\\Models\\": "src/DB/Table",
-            "GAR\\Uploader\\Readers\\": "src/XMLReader/XMLReaders",
             "GAR\\Tests\\": "tests/"
         }
     },

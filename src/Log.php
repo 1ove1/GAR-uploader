@@ -4,6 +4,9 @@ namespace GAR\Uploader;
 
 
 // path to the log directory
+use PDOException;
+use Throwable;
+
 define('LOG_PATH', Env::logPath->value);
 set_exception_handler([Log::class, 'error']);
 
@@ -34,7 +37,7 @@ class Log
 	}
 
 	/**
-	 * warning method (making caption if expetion was throw)
+	 * warning method (making caption if exception was throw)
 	 * @param  string $message message to log
 	 * @return void
 	 */
@@ -43,23 +46,23 @@ class Log
 
 	}
 
-	/**
-	 * error method (making caption if error was throw)
-	 * @param  \Throwable $excp   throwed exception
-	 * @param  array      $params additional strings
-	 * @return void
-	 */
-	public static function error(\Throwable $excp, array $params = []) : void
+  /**
+   * error method (making caption if error was throw)
+   * @param Throwable $exception
+   * @param array $params additional strings
+   * @return void
+   */
+	public static function error(Throwable $exception, array $params = []) : void
 	{
 
-		if ($excp instanceof \PDOException) {
+		if ($exception instanceof PDOException) {
 			$msg = Msg::LOG_DB_BAD->value;
 		}
 
 		self::put(sprintf("[%s]: %s\n%s\n%s\n",
 			self::currTime(), 
 			Msg::LOG_BAD->value,
-			$excp, 
+			$exception,
 			http_build_query($params, '', ', ')
 		));
 	}
@@ -93,25 +96,24 @@ class Log
 	 */
 	private static function put(string $message) : void 
 	{
-		file_put_contents(CURR_LOG_FILE, $message, FILE_APPEND);
 	
 		if (count($_SERVER['argv']) >= 2 && 
 			in_array($_SERVER['argv'][1], ['-l', '--log'])) {
-
+      file_put_contents(CURR_LOG_FILE, $message, FILE_APPEND);
 			echo "\r" . $message;
 
 			if (self::addTask() > self::removeTask()) {
 				echo sprintf("Прогресс: %d%% (%d из %d)", 
-					self::removeTask() * 100 / (self::addTask() - 1),
+					self::removeTask() * 100 / (self::addTask()),
 					self::removeTask(),
-					self::addTask() - 1
+					self::addTask()
 				);
 			}
 		}
 	}
 
 	/**
-	 * add task to progress badd
+	 * add task to progress bar
 	 * @param 	int $add task weight
 	 * @return 	int  	total tasks count
 	 */
@@ -119,9 +121,9 @@ class Log
 	{
 		static $tasksCount = 0;
 
-		if ($add < 0) {
-			$tasksCount = 0;
-		}
+//		if ($add < 0) {
+//			$tasksCount = -1;
+//		}
 
 		$tasksCount += $add;
 

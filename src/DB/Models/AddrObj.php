@@ -2,7 +2,9 @@
 
 namespace GAR\Uploader\DB\Models;
 
-use GAR\Uploader\Models\ConcreteTable;
+use GAR\Uploader\DB\Table\AbstractTable\SQL\DeleteQuery;
+use GAR\Uploader\DB\Table\AbstractTable\SQL\QueryModel;
+use GAR\Uploader\DB\Table\ConcreteTable;
 use JetBrains\PhpStorm\ArrayShape;
 
 
@@ -12,13 +14,9 @@ use JetBrains\PhpStorm\ArrayShape;
  * EXTENDS CONCRETE TABLE AND USING FOR COMMUNICATE
  * WITH TABLE 'address_info'
  */
-class AddrObj extends ConcreteTable 
+class AddrObj extends ConcreteTable implements QueryModel
 {
-  #[ArrayShape(['id_addr' => "string[]",
-    'objectid_addr' => "string[]",
-    'objectguid_addr' => "string[]",
-    'name_addr' => "string[]",
-    'typename_addr' => "string[]"])]
+  #[ArrayShape(['id_addr' => "string[]", 'objectid_addr' => "string[]", 'objectguid_addr' => "string[]", 'level_addr' => "string[]", 'name_addr' => "string[]", 'typename_addr' => "string[]", 'FOREIGN KEY (level_addr)' => "string[]"])]
   public function fieldsToCreate() : ?array
 	{
 		return [
@@ -26,17 +24,23 @@ class AddrObj extends ConcreteTable
 				'BIGINT UNSIGNED NOT NULL',
 			],
 			'objectid_addr' => [
-				'BIGINT UNSIGNED NOT NULL',
+				'BIGINT UNSIGNED PRIMARY KEY NOT NULL',
 			],
 			'objectguid_addr' => [
-				'BIGINT UNSIGNED NOT NULL',
+				'CHAR(50) NOT NULL',
 			],
+      'level_addr' => [
+        'TINYINT UNSIGNED NOT NULL'
+      ],
 			'name_addr' => [
 				'VARCHAR(100) NOT NULL',
 			],
 			'typename_addr' => [
 				'VARCHAR(100) NOT NULL',
 			],
+      'FOREIGN KEY (level_addr)' => [
+        'REFERENCES obj_levels (id)'
+      ]
 		];
 	}
 }

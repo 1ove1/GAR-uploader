@@ -2,12 +2,8 @@
 
 namespace GAR\Uploader\DB;
 
-use GAR\Uploader\DB\Models\AddrObj;
-use GAR\Uploader\DB\Models\AddrObjParams;
-use GAR\Uploader\DB\Models\AdminHierarchy;
-use GAR\Uploader\DB\Models\Houses;
-use GAR\Uploader\DB\Models\MunHierarchy;
-use GAR\Uploader\Models\{ConcreteTable,};
+use GAR\Uploader\DB\Models\{AddrObj, AddrObjParams, AdminHierarchy, Houses, MunHierarchy, ObjLevels};
+use GAR\Uploader\DB\Table\AbstractTable\SQL\QueryModel;
 
 /**
  * BD FACTORY CLASS
@@ -18,28 +14,33 @@ use GAR\Uploader\Models\{ConcreteTable,};
 class DBFactory
 {
 	
-	public static function getAddressObjectTable() : ConcreteTable
+	public static function getAddressObjectTable() : QueryModel
 	{
 		 return new AddrObj(DBFacade::getInstance());
 	}
 
-	public static function getAddressObjectParamsTable() : ConcreteTable
+	public static function getAddressObjectParamsTable() : QueryModel
 	{
 			return new AddrObjParams(DBFacade::getInstance());
 	}
 
-	public static function getHousesTable() : ConcreteTable
+	public static function getHousesTable() : QueryModel
 	{
 		return new Houses(DBFacade::getInstance());
 	}
 
-	public static function getAdminTable() : ConcreteTable
+	public static function getAdminTable() : QueryModel
 	{
 		return new AdminHierarchy(DBFacade::getInstance());
 	}
 
-	public static function getMunTable() : ConcreteTable
+	public static function getMunTable() : QueryModel
 	{
 		return new MunHierarchy(DBFacade::getInstance());
 	}
+
+  public static function getObjectLevels() : QueryModel
+  {
+    return new ObjLevels(DBFacade::getInstance());
+  }
 }

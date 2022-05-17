@@ -2,7 +2,8 @@
 
 namespace GAR\Uploader\DB\Models;
 
-use GAR\Uploader\Models\ConcreteTable;
+use GAR\Uploader\DB\Table\AbstractTable\SQL\QueryModel;
+use GAR\Uploader\DB\Table\ConcreteTable;
 use JetBrains\PhpStorm\ArrayShape;
 
 
@@ -12,11 +13,13 @@ use JetBrains\PhpStorm\ArrayShape;
  * EXTENDS CONCRETE TABLE AND USING FOR COMMUNICATE
  * WITH TABLE 'address_info'
  */
-class AdminHierarchy extends ConcreteTable
+class AdminHierarchy extends ConcreteTable implements QueryModel
 {
-	#[ArrayShape(['id_admin' => "string[]",
+  #[ArrayShape(['id_admin' => "string[]",
     'objectid_admin' => "string[]",
-    'parentobjid_admin' => "string[]"])]
+    'parentobjid_admin' => "string[]",
+    'FOREIGN KEY (objectid_admin)' => "string[]",
+    'FOREIGN KEY (parentobjid_admin)' => "string[]"])]
   public function fieldsToCreate() : ?array
 	{
 		return [
@@ -29,6 +32,9 @@ class AdminHierarchy extends ConcreteTable
 			'parentobjid_admin' => [
         'BIGINT UNSIGNED NOT NULL',
 			],
+//      'FOREIGN KEY (objectid_admin)' => [
+//        'REFERENCES addr_obj (objectid_addr)'
+//      ],
 		];
 	}
 }

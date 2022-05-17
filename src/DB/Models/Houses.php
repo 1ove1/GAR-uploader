@@ -2,7 +2,8 @@
 
 namespace GAR\Uploader\DB\Models;
 
-use GAR\Uploader\Models\ConcreteTable;
+use GAR\Uploader\DB\Table\AbstractTable\SQL\QueryModel;
+use GAR\Uploader\DB\Table\ConcreteTable;
 use JetBrains\PhpStorm\ArrayShape;
 
 
@@ -12,7 +13,7 @@ use JetBrains\PhpStorm\ArrayShape;
  * EXTENDS CONCRETE TABLE AND USING FOR COMMUNICATE
  * WITH TABLE 'address_info'
  */
-class Houses extends ConcreteTable 
+class Houses extends ConcreteTable implements QueryModel
 {
 	#[ArrayShape(['id_houses' => "string[]",
     'objectid_houses' => "string[]",
@@ -29,13 +30,13 @@ class Houses extends ConcreteTable
         'BIGINT UNSIGNED NOT NULL',
 			],
 			'objectguid_houses' => [
-        'BIGINT UNSIGNED NOT NULL',
+        'CHAR(50) NOT NULL',
 			],
 			'housenum_houses' => [
-				'CHAR(100) NOT NULL',
+				'CHAR(100)',
 			],
 			'housetype_houses' => [
-				'CHAR(50) NOT NULL',
+				'CHAR(50)',
 			],
 		];
 	}

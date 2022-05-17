@@ -3,9 +3,7 @@
 namespace GAR\Uploader\DB;
 
 use GAR\Uploader\{DB\PDOAdapter\DBAdapter,
-  DB\PDOAdapter\InsertTemplate,
   DB\PDOAdapter\PDOObject,
-  DB\PDOAdapter\PDOTemplate,
   Env,
   Log,
   Msg};
@@ -30,7 +28,8 @@ class DBFacade
    * @param string $envClassName - name of conf class (Env by default)
    * @return DBAdapter - PDO-object with curr db connection
    */
-	public static function getInstance(string $envClassName = Env::class) : DBAdapter {
+	public static function getInstance(string $envClassName = Env::class) : DBAdapter
+  {
 
 		if (self::$instance === null) {
 			self::$instance = self::connectViaPDO($envClassName);
@@ -69,18 +68,6 @@ class DBFacade
     return $PDO;
 	}
 
-  public static function getTemplate(string $tableName,
-                                     array $fields,
-                                     int $maxCountStages): InsertTemplate
-  {
-    return new PDOTemplate($tableName, $fields, $maxCountStages);
-  }
-
-  /**
-   * Convert classname to normal table name
-   * @param string $className - camel case classname
-   * @return string
-   */
   public static function genTableNameByClassName(string $className) : string
   {
     // remove some ..\\..\\..\\ClassName prefix

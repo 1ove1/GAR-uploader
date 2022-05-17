@@ -2,7 +2,7 @@
 
 namespace GAR\Uploader\DB\PDOAdapter;
 
-use GAR\Uploader\DB\Table\AbstractTable\SQLFactory\SQLQuery;
+use GAR\Uploader\DB\Table\AbstractTable\Container\QueryContainer;
 use RuntimeException;
 use PDO;
 use PDOStatement;
@@ -57,10 +57,10 @@ class PDOObject implements DBAdapter
 
   /**
    * Make SQL query
-   * @param SQLQuery $query - sql object
+   * @param QueryContainer $query - sql object
    * @return self
    */
-  public function rawQuery(SQLQuery $query) : self
+  public function rawQuery(QueryContainer $query) : self
   {
     if ($query->isValid()) {
       $res = $this->getInstance()->query($query->getRawSql());
@@ -84,12 +84,26 @@ class PDOObject implements DBAdapter
     return $this->getInstance()->prepare($template);
   }
 
+  /**
+   * Return prepared object InsertTemplate
+   * @param string $tableName - name of table
+   * @param array $fields - fields to prepare
+   * @param int $stagesCount - buffer size
+   * @return InsertTemplate - prepare object
+   */
+  function getInsertTemplate(string $tableName,
+                             array $fields,
+                             int $stagesCount = 1) : InsertTemplate
+  {
+    return new PDOTemplate($tableName, $fields, $stagesCount);
+  }
+
 
   /**
    * @param int $flag - standard PDO flag
    * @return array|bool|null - fetch result
    */
-  public function fetchAll(int $flag = PDO::FETCH_COLUMN) : array|bool|null
+  public function fetchAll(int $flag = self::F_ALL) : array|bool|null
   {
     return $this->getLastQuery()?->fetchAll($flag);
   }
@@ -97,7 +111,7 @@ class PDOObject implements DBAdapter
   /**
    * @return PDOStatement|null
    */
-  public function getLastQuery(): ?PDOStatement
+  private function getLastQuery(): ?PDOStatement
   {
     return $this->lastQuery;
   }
@@ -105,7 +119,7 @@ class PDOObject implements DBAdapter
   /**
    * @param PDOStatement|null $lastQuery
    */
-  public function setLastQuery(?PDOStatement $lastQuery): void
+  private function setLastQuery(?PDOStatement $lastQuery): void
   {
     if ($lastQuery) {
       $this->lastQuery = $lastQuery;
@@ -129,7 +143,7 @@ class PDOObject implements DBAdapter
   /**
    * @return PDO|null - curr instance of PDO object
    */
-  public function getInstance(): PDO|null
+  private function getInstance(): PDO|null
   {
     return $this->instance;
   }
@@ -137,7 +151,7 @@ class PDOObject implements DBAdapter
   /**
    * @return string - db type
    */
-  public function getDbType(): string
+  private function getDbType(): string
   {
     return $this->dbType;
   }
@@ -145,7 +159,7 @@ class PDOObject implements DBAdapter
   /**
    * @return string - hostname
    */
-  public function getHost(): string
+  private function getHost(): string
   {
     return $this->host;
   }
@@ -153,12 +167,12 @@ class PDOObject implements DBAdapter
   /**
    * @return string - db name
    */
-  public function getDbName(): string
+  private function getDbName(): string
   {
     return $this->dbName;
   }
 
-  public function getUser(): string
+  private function getUser(): string
   {
     return $this->user;
   }

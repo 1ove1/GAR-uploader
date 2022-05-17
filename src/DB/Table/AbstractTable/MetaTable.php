@@ -3,11 +3,9 @@
 namespace GAR\Uploader\DB\Table\AbstractTable;
 
 use GAR\Uploader\DB\PDOAdapter\DBAdapter;
-use GAR\Uploader\DB\PDOAdapter\PDOObject;
-use GAR\Uploader\DB\Table\AbstractTable\SQLFactory\SQLGenerator;
 use JetBrains\PhpStorm\ArrayShape;
 
-class MetaTable
+abstract class MetaTable
 {
   /**
    * @var DBAdapter - PDO object
@@ -16,7 +14,7 @@ class MetaTable
   /**
    * @var string - name of table
    */
-  private readonly string $name;
+  private readonly string $tableName;
   /**
    * @var array - table fields
    */
@@ -25,19 +23,24 @@ class MetaTable
    * @var array - full information about table
    */
   private readonly array $metaInfo;
+  /**
+   * @var QueryFactory - factory of sql queries
+   */
+  private readonly QueryFactory $factory;
 
   /**
    * Create meta table object
    * @param DBAdapter $db - database adapter connection
    * @param string $tableName - name of table
-   * @param ?array $createOption - option for create table
+   * @param array|null $createOption - option for create table
    */
   public function __construct(DBAdapter $db,
                               string $tableName,
-                              ?array $createOption)
+                              ?array $createOption = null)
   {
     $this->db = $db;
-    $this->name = $tableName;
+    $this->tableName = $tableName;
+    $this->factory = new QueryGenerator();
     if ($createOption !== null) {
       $this->createTable($tableName, $createOption);
     }
@@ -53,10 +56,10 @@ class MetaTable
   #[ArrayShape(['metaInfo' => "array|false", 'fields' => "array|false"])]
   private function getMetaInfoAndFields(string $tableName) : array
   {
-    $query = SQLGenerator::genMetaQuery($tableName);
+    $query = $this->getFactory()->genMetaQuery($tableName);
 
-    $metaInfo = $this->getDb()->rawQuery($query)->fetchAll(PDOObject::F_ALL);
-    $tableFields = $this->getDb()->rawQuery($query)->fetchAll(PDOObject::F_COL);
+    $metaInfo = $this->getDb()->rawQuery($query)->fetchAll($this->getDb()::F_ALL);
+    $tableFields = $this->getDb()->rawQuery($query)->fetchAll($this->getDb()::F_COL);
 
     return [$metaInfo, $tableFields];
   }
@@ -64,17 +67,17 @@ class MetaTable
   /**
    * Create table using curr connected, name of table and fields
    * @param string $tableName - name of table
-   * @param array $createOption - fields and their params
+   * @param array $fieldsToCreate - fields and their params
    * @return void
    */
-  private function createTable(string $tableName, array $createOption) : void
+  private function createTable(string $tableName, array $fieldsToCreate) : void
   {
-    if (!$this->tableExistsAndDropCheck($tableName)) {
+    if ($this->tableExistsAndDropCheck($tableName)) {
       return;
     }
 
-    $this->getDb()->rawQuery(SQLGenerator::genCreateTableQuery(
-      $this->getName(), $createOption
+    $this->getDb()->rawQuery($this->getFactory()->genCreateTableQuery(
+      $this->getTableName(), $fieldsToCreate
     ));
   }
 
@@ -83,37 +86,29 @@ class MetaTable
    * @param string $tableName - name of table
    * @return bool - user decision
    */
-  public function tableExistsAndDropCheck(string $tableName) : bool
+  protected function tableExistsAndDropCheck(string $tableName) : bool
   {
     $connection = $this->getDb();
-    $tableList = $connection->rawQuery(SQLGenerator::genShowTableQuery())
-                            ->fetchAll(PDOObject::F_COL);
-    $userInput = 'Y';
+    $tableList = $connection->rawQuery($this->getFactory()->genShowTableQuery())
+                            ->fetchAll($this->getDb()::F_COL);
 
-    if (in_array($tableName, $tableList)) {
-      do {
-        $userInput = readline(
-          'create new ' . $tableName . '? [Y/n]: '
-        );
-      } while (!preg_match('/[YyNnДдНн]+/', $userInput));
-    }
-    return preg_match("/[YyДд]/", $userInput);
+    return in_array($tableName, $tableList);
   }
 
   /**
    * Return name of table
    * @return string - name of table
    */
-  public function getName(): string
+  public function getTableName(): string
   {
-    return $this->name;
+    return $this->tableName;
   }
 
   /**
    * Return mta info about table
    * @return array|null - meta info about table
    */
-  public function getMetaInfo(): ?array
+  protected function getMetaInfo(): ?array
   {
     return $this->metaInfo;
   }
@@ -122,7 +117,7 @@ class MetaTable
    * Return fields for curr table
    * @return array|null - fields
    */
-  function getFields(): ?array
+  protected function getFields(): ?array
   {
     return $this->fields;
   }
@@ -133,5 +128,10 @@ class MetaTable
   protected function getDb(): DBAdapter
   {
     return $this->db;
+  }
+
+  protected function getFactory() : QueryFactory
+  {
+    return $this->factory;
   }
 }
